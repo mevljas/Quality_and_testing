@@ -2,15 +2,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinomialHeap<T extends Comparable<T>> {
+public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
 
-    private Node<T> head;
+    private Node<Tip> head;
 
     public BinomialHeap() {
         head = null;
     }
 
-    public BinomialHeap(Node<T> head) {
+    public BinomialHeap(Node<Tip> head) {
         this.head = head;
     }
 
@@ -22,18 +22,18 @@ public class BinomialHeap<T extends Comparable<T>> {
         head = null;
     }
 
-    public void insert(T key) {
-        Node<T> node = new Node<T>(key);
-        BinomialHeap<T> tempHeap = new BinomialHeap<T>(node);
+    public void insert(Tip key) {
+        Node<Tip> node = new Node<Tip>(key);
+        BinomialHeap<Tip> tempHeap = new BinomialHeap<Tip>(node);
         head = union(tempHeap);
     }
 
-    public T findMinimum() {
+    public Tip findMinimum() {
         if (head == null) {
             return null;
         } else {
-            Node<T> min = head;
-            Node<T> next = min.sibling;
+            Node<Tip> min = head;
+            Node<Tip> next = min.sibling;
 
             while (next != null) {
                 if (next.compareTo(min) < 0) {
@@ -47,11 +47,11 @@ public class BinomialHeap<T extends Comparable<T>> {
     }
 
     // Implemented to test delete/decrease key, runs in O(n) time
-    public Node<T> search(T key) {
-        List<Node<T>> nodes = new ArrayList<Node<T>>();
+    public Node<Tip> search(Tip key) {
+        List<Node<Tip>> nodes = new ArrayList<Node<Tip>>();
         nodes.add(head);
         while (!nodes.isEmpty()) {
-            Node<T> curr = nodes.get(0);
+            Node<Tip> curr = nodes.get(0);
             nodes.remove(0);
             if (curr.key == key) {
                 return curr;
@@ -66,17 +66,17 @@ public class BinomialHeap<T extends Comparable<T>> {
         return null;
     }
 
-    public void decreaseKey(Node<T> node, T newKey) {
+    public void decreaseKey(Node<Tip> node, Tip newKey) {
         node.key = newKey;
         bubbleUp(node, false);
     }
 
-    public void delete(Node<T> node) {
+    public void delete(Node<Tip> node) {
         node = bubbleUp(node, true);
         if (head == node) {
             removeTreeRoot(node, null);
         } else {
-            Node<T> prev = head;
+            Node<Tip> prev = head;
             while (prev.sibling.compareTo(node) != 0) {
                 prev = prev.sibling;
             }
@@ -84,10 +84,10 @@ public class BinomialHeap<T extends Comparable<T>> {
         }
     }
 
-    private Node<T> bubbleUp(Node<T> node, boolean toRoot) {
-        Node<T> parent = node.parent;
+    private Node<Tip> bubbleUp(Node<Tip> node, boolean toRoot) {
+        Node<Tip> parent = node.parent;
         while (parent != null && (toRoot || node.compareTo(parent) < 0)) {
-            T temp = node.key;
+            Tip temp = node.key;
             node.key = parent.key;
             parent.key = temp;
             node = parent;
@@ -96,15 +96,15 @@ public class BinomialHeap<T extends Comparable<T>> {
         return node;
     }
 
-    public T extractMin() {
+    public Tip extractMin() {
         if (head == null) {
             return null;
         }
 
-        Node<T> min = head;
-        Node<T> minPrev = null;
-        Node<T> next = min.sibling;
-        Node<T> nextPrev = min;
+        Node<Tip> min = head;
+        Node<Tip> minPrev = null;
+        Node<Tip> next = min.sibling;
+        Node<Tip> nextPrev = min;
 
         while (next != null) {
             if (next.compareTo(min) < 0) {
@@ -119,7 +119,7 @@ public class BinomialHeap<T extends Comparable<T>> {
         return min.key;
     }
 
-    private void removeTreeRoot(Node<T> root, Node<T> prev) {
+    private void removeTreeRoot(Node<Tip> root, Node<Tip> prev) {
         // Remove root from the heap
         if (root == head) {
             head = root.sibling;
@@ -128,23 +128,23 @@ public class BinomialHeap<T extends Comparable<T>> {
         }
 
         // Reverse the order of root's children and make a new heap
-        Node<T> newHead = null;
-        Node<T> child = root.child;
+        Node<Tip> newHead = null;
+        Node<Tip> child = root.child;
         while (child != null) {
-            Node<T> next = child.sibling;
+            Node<Tip> next = child.sibling;
             child.sibling = newHead;
             child.parent = null;
             newHead = child;
             child = next;
         }
-        BinomialHeap<T> newHeap = new BinomialHeap<T>(newHead);
+        BinomialHeap<Tip> newHeap = new BinomialHeap<Tip>(newHead);
 
         // Union the heaps and set its head as this.head
         head = union(newHeap);
     }
 
     // Merge two binomial trees of the same order
-    private void linkTree(Node<T> minNodeTree, Node<T> other) {
+    private void linkTree(Node<Tip> minNodeTree, Node<Tip> other) {
         other.parent = minNodeTree;
         other.sibling = minNodeTree.child;
         minNodeTree.child = other;
@@ -152,8 +152,8 @@ public class BinomialHeap<T extends Comparable<T>> {
     }
 
     // Union two binomial heaps into one and return the head
-    public Node<T> union(BinomialHeap<T> heap) {
-        Node<T> newHead = merge(this, heap);
+    public Node<Tip> union(BinomialHeap<Tip> heap) {
+        Node<Tip> newHead = merge(this, heap);
 
         head = null;
         heap.head = null;
@@ -162,9 +162,9 @@ public class BinomialHeap<T extends Comparable<T>> {
             return null;
         }
 
-        Node<T> prev = null;
-        Node<T> curr = newHead;
-        Node<T> next = newHead.sibling;
+        Node<Tip> prev = null;
+        Node<Tip> curr = newHead;
+        Node<Tip> next = newHead.sibling;
 
         while (next != null) {
             if (curr.degree != next.degree || (next.sibling != null &&
@@ -193,16 +193,16 @@ public class BinomialHeap<T extends Comparable<T>> {
         return newHead;
     }
 
-    private static <T extends Comparable<T>> Node<T> merge(
-            BinomialHeap<T> heap1, BinomialHeap<T> heap2) {
+    private static <Tip extends Comparable<Tip>> Node<Tip> merge(
+            BinomialHeap<Tip> heap1, BinomialHeap<Tip> heap2) {
         if (heap1.head == null) {
             return heap2.head;
         } else if (heap2.head == null) {
             return heap1.head;
         } else {
-            Node<T> head;
-            Node<T> heap1Next = heap1.head;
-            Node<T> heap2Next = heap2.head;
+            Node<Tip> head;
+            Node<Tip> heap1Next = heap1.head;
+            Node<Tip> heap2Next = heap2.head;
 
             if (heap1.head.degree <= heap2.head.degree) {
                 head = heap1.head;
@@ -212,7 +212,7 @@ public class BinomialHeap<T extends Comparable<T>> {
                 heap2Next = heap2Next.sibling;
             }
 
-            Node<T> tail = head;
+            Node<Tip> tail = head;
 
             while (heap1Next != null && heap2Next != null) {
                 if (heap1Next.degree <= heap2Next.degree) {
@@ -243,28 +243,68 @@ public class BinomialHeap<T extends Comparable<T>> {
         }
     }
 
-    public static class Node<T extends Comparable<T>>
-            implements Comparable<Node<T>> {
-        public T key;
+    @Override
+    public void add(Tip e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tip removeFirst() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tip getFirst() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int depth() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Tip remove(Tip e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean exists(Tip e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Tip> asList() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public static class Node<Tip extends Comparable> 
+            implements Comparable<Node<Tip>> {
+        public Tip key;
         public int degree;
-        public Node<T> parent;
-        public Node<T> child;
-        public Node<T> sibling;
+        public Node<Tip> parent;
+        public Node<Tip> child;
+        public Node<Tip> sibling;
 
         public Node() {
             key = null;
         }
 
-        public Node(T key) {
+        public Node(Tip key) {
             this.key = key;
         }
 
-        public int compareTo(Node<T> other) {
+        public int compareTo(Node<Tip> other) {
             return this.key.compareTo(other.key);
         }
 
         public void print(int level) {
-            Node<T> curr = this;
+            Node<Tip> curr = this;
             while (curr != null) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < level; i++) {
