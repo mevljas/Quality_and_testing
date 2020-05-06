@@ -1,39 +1,70 @@
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
+    
+     public static class BinomialHeapNode<Tip extends Comparable>{
+        public Tip key;
+        public int degree;
+        public BinomialHeapNode<Tip> parent;
+        public BinomialHeapNode<Tip> child;
+        public BinomialHeapNode<Tip> sibling;
 
-    private Node<Tip> head;
+        public BinomialHeapNode() {
+            key = null;
+        }
+
+        public BinomialHeapNode(Tip key) {
+            this.key = key;
+        }
+
+        public int compareTo(BinomialHeapNode<Tip> other) {
+            return this.key.compareTo(other.key);
+        }
+
+        public void print(int level) {
+            BinomialHeapNode<Tip> curr = this;
+            while (curr != null) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < level; i++) {
+                    sb.append(" ");
+                }
+                sb.append(curr.key.toString());
+                System.out.println(sb.toString());
+                if (curr.child != null) {
+                    curr.child.print(level + 1);
+                }
+                curr = curr.sibling;
+            }
+        }
+    }
+
+    private BinomialHeapNode<Tip> topNode;
 
     public BinomialHeap() {
-        head = null;
+        topNode = null;
     }
 
-    public BinomialHeap(Node<Tip> head) {
-        this.head = head;
+    public BinomialHeap(BinomialHeapNode<Tip> topNode) {
+        this.topNode = topNode;
     }
 
-    public boolean isEmpty() {
-        return head == null;
-    }
+   
 
     public void clear() {
-        head = null;
+        topNode = null;
     }
 
-    public void insert(Tip key) {
-        Node<Tip> node = new Node<Tip>(key);
-        BinomialHeap<Tip> tempHeap = new BinomialHeap<Tip>(node);
-        head = union(tempHeap);
-    }
 
     public Tip findMinimum() {
-        if (head == null) {
+        if (topNode == null) {
             return null;
         } else {
-            Node<Tip> min = head;
-            Node<Tip> next = min.sibling;
+            BinomialHeapNode<Tip> min = topNode;
+            BinomialHeapNode<Tip> next = min.sibling;
 
             while (next != null) {
                 if (next.compareTo(min) < 0) {
@@ -45,13 +76,31 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
             return min.key;
         }
     }
+    
+    public Tip findMaximum() {
+        if (topNode == null) {
+            return null;
+        } else {
+            BinomialHeapNode<Tip> max = topNode;
+            BinomialHeapNode<Tip> next = max.sibling;
+
+            while (next != null) {
+                if (next.compareTo(max) > 0) {
+                    max = next;
+                }
+                next = next.sibling;
+            }
+
+            return max.key;
+        }
+    }
 
     // Implemented to test delete/decrease key, runs in O(n) time
-    public Node<Tip> search(Tip key) {
-        List<Node<Tip>> nodes = new ArrayList<Node<Tip>>();
-        nodes.add(head);
+    public BinomialHeapNode<Tip> search(Tip key) {
+        List<BinomialHeapNode<Tip>> nodes = new ArrayList<>();
+        nodes.add(topNode);
         while (!nodes.isEmpty()) {
-            Node<Tip> curr = nodes.get(0);
+            BinomialHeapNode<Tip> curr = nodes.get(0);
             nodes.remove(0);
             if (curr.key == key) {
                 return curr;
@@ -66,17 +115,17 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         return null;
     }
 
-    public void decreaseKey(Node<Tip> node, Tip newKey) {
+    public void decreaseKey(BinomialHeapNode<Tip> node, Tip newKey) {
         node.key = newKey;
         bubbleUp(node, false);
     }
 
-    public void delete(Node<Tip> node) {
+    public void delete(BinomialHeapNode<Tip> node) {
         node = bubbleUp(node, true);
-        if (head == node) {
+        if (topNode == node) {
             removeTreeRoot(node, null);
         } else {
-            Node<Tip> prev = head;
+            BinomialHeapNode<Tip> prev = topNode;
             while (prev.sibling.compareTo(node) != 0) {
                 prev = prev.sibling;
             }
@@ -84,8 +133,8 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         }
     }
 
-    private Node<Tip> bubbleUp(Node<Tip> node, boolean toRoot) {
-        Node<Tip> parent = node.parent;
+    private BinomialHeapNode<Tip> bubbleUp(BinomialHeapNode<Tip> node, boolean toRoot) {
+        BinomialHeapNode<Tip> parent = node.parent;
         while (parent != null && (toRoot || node.compareTo(parent) < 0)) {
             Tip temp = node.key;
             node.key = parent.key;
@@ -97,14 +146,14 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
     }
 
     public Tip extractMin() {
-        if (head == null) {
+        if (topNode == null) {
             return null;
         }
 
-        Node<Tip> min = head;
-        Node<Tip> minPrev = null;
-        Node<Tip> next = min.sibling;
-        Node<Tip> nextPrev = min;
+        BinomialHeapNode<Tip> min = topNode;
+        BinomialHeapNode<Tip> minPrev = null;
+        BinomialHeapNode<Tip> next = min.sibling;
+        BinomialHeapNode<Tip> nextPrev = min;
 
         while (next != null) {
             if (next.compareTo(min) < 0) {
@@ -118,20 +167,43 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         removeTreeRoot(min, minPrev);
         return min.key;
     }
+    
+    public Tip extractMax() {
+        if (topNode == null) {
+            return null;
+        }
 
-    private void removeTreeRoot(Node<Tip> root, Node<Tip> prev) {
+        BinomialHeapNode<Tip> max = topNode;
+        BinomialHeapNode<Tip> maxPrev = null;
+        BinomialHeapNode<Tip> next = max.sibling;
+        BinomialHeapNode<Tip> nextPrev = max;
+
+        while (next != null) {
+            if (next.compareTo(max) < 0) {
+                max = next;
+                maxPrev = nextPrev;
+            }
+            nextPrev = next;
+            next = next.sibling;
+        }
+
+        removeTreeRoot(max, maxPrev);
+        return max.key;
+    }
+
+    private void removeTreeRoot(BinomialHeapNode<Tip> root, BinomialHeapNode<Tip> prev) {
         // Remove root from the heap
-        if (root == head) {
-            head = root.sibling;
+        if (root == topNode) {
+            topNode = root.sibling;
         } else {
             prev.sibling = root.sibling;
         }
 
         // Reverse the order of root's children and make a new heap
-        Node<Tip> newHead = null;
-        Node<Tip> child = root.child;
+        BinomialHeapNode<Tip> newHead = null;
+        BinomialHeapNode<Tip> child = root.child;
         while (child != null) {
-            Node<Tip> next = child.sibling;
+            BinomialHeapNode<Tip> next = child.sibling;
             child.sibling = newHead;
             child.parent = null;
             newHead = child;
@@ -140,11 +212,11 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         BinomialHeap<Tip> newHeap = new BinomialHeap<Tip>(newHead);
 
         // Union the heaps and set its head as this.head
-        head = union(newHeap);
+        topNode = union(newHeap);
     }
 
     // Merge two binomial trees of the same order
-    private void linkTree(Node<Tip> minNodeTree, Node<Tip> other) {
+    private void linkTree(BinomialHeapNode<Tip> minNodeTree, BinomialHeapNode<Tip> other) {
         other.parent = minNodeTree;
         other.sibling = minNodeTree.child;
         minNodeTree.child = other;
@@ -152,19 +224,19 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
     }
 
     // Union two binomial heaps into one and return the head
-    public Node<Tip> union(BinomialHeap<Tip> heap) {
-        Node<Tip> newHead = merge(this, heap);
+    public BinomialHeapNode<Tip> union(BinomialHeap<Tip> heap) {
+        BinomialHeapNode<Tip> newHead = merge(this, heap);
 
-        head = null;
-        heap.head = null;
+        topNode = null;
+        heap.topNode = null;
 
         if (newHead == null) {
             return null;
         }
 
-        Node<Tip> prev = null;
-        Node<Tip> curr = newHead;
-        Node<Tip> next = newHead.sibling;
+        BinomialHeapNode<Tip> prev = null;
+        BinomialHeapNode<Tip> curr = newHead;
+        BinomialHeapNode<Tip> next = newHead.sibling;
 
         while (next != null) {
             if (curr.degree != next.degree || (next.sibling != null &&
@@ -193,26 +265,26 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         return newHead;
     }
 
-    private static <Tip extends Comparable<Tip>> Node<Tip> merge(
+    private static <Tip extends Comparable<Tip>> BinomialHeapNode<Tip> merge(
             BinomialHeap<Tip> heap1, BinomialHeap<Tip> heap2) {
-        if (heap1.head == null) {
-            return heap2.head;
-        } else if (heap2.head == null) {
-            return heap1.head;
+        if (heap1.topNode == null) {
+            return heap2.topNode;
+        } else if (heap2.topNode == null) {
+            return heap1.topNode;
         } else {
-            Node<Tip> head;
-            Node<Tip> heap1Next = heap1.head;
-            Node<Tip> heap2Next = heap2.head;
+            BinomialHeapNode<Tip> head;
+            BinomialHeapNode<Tip> heap1Next = heap1.topNode;
+            BinomialHeapNode<Tip> heap2Next = heap2.topNode;
 
-            if (heap1.head.degree <= heap2.head.degree) {
-                head = heap1.head;
+            if (heap1.topNode.degree <= heap2.topNode.degree) {
+                head = heap1.topNode;
                 heap1Next = heap1Next.sibling;
             } else {
-                head = heap2.head;
+                head = heap2.topNode;
                 heap2Next = heap2Next.sibling;
             }
 
-            Node<Tip> tail = head;
+            BinomialHeapNode<Tip> tail = head;
 
             while (heap1Next != null && heap2Next != null) {
                 if (heap1Next.degree <= heap2Next.degree) {
@@ -238,86 +310,104 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
 
     public void print() {
         System.out.println("Binomial heap:");
-        if (head != null) {
-            head.print(0);
+        if (topNode != null) {
+            topNode.print(0);
         }
     }
 
     @Override
     public void add(Tip e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BinomialHeapNode<Tip> node = new BinomialHeapNode<>(e);
+        BinomialHeap<Tip> tempHeap = new BinomialHeap<>(node);
+        topNode = union(tempHeap);
     }
 
     @Override
     public Tip removeFirst() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return extractMax();
     }
 
     @Override
     public Tip getFirst() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return findMaximum();
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (topNode == null) {
+            return 0;
+        } else {
+            BinomialHeapNode<Tip> node = topNode;
+            BinomialHeapNode<Tip> next = node.sibling;
+            int count = (int) Math.pow(2, next.degree );
+            while (next != null) {
+                count += Math.pow(2, next.degree );
+                next = next.sibling;
+                
+            }
+
+            return count;
+        }
     }
 
     @Override
     public int depth() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if (topNode == null) {
+            return 0;
+        } else {
+            BinomialHeapNode<Tip> max = topNode;
+            BinomialHeapNode<Tip> next = max.sibling;
+
+            while (next != null) {
+                if (next.compareTo(max) > 0) {
+                    max = next;
+                }
+                next = next.sibling;
+            }
+
+            return max.degree;
+        }
     }
 
     @Override
     public Tip remove(Tip e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        delete(new BinomialHeapNode<>(e));
+        return e;
     }
 
     @Override
     public boolean exists(Tip e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return search(e) != null;
+    }
+    
+    @Override
+    public boolean isEmpty() {
+        return topNode == null;
     }
 
     @Override
     public List<Tip> asList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public static class Node<Tip extends Comparable> 
-            implements Comparable<Node<Tip>> {
-        public Tip key;
-        public int degree;
-        public Node<Tip> parent;
-        public Node<Tip> child;
-        public Node<Tip> sibling;
-
-        public Node() {
-            key = null;
-        }
-
-        public Node(Tip key) {
-            this.key = key;
-        }
-
-        public int compareTo(Node<Tip> other) {
-            return this.key.compareTo(other.key);
-        }
-
-        public void print(int level) {
-            Node<Tip> curr = this;
-            while (curr != null) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < level; i++) {
-                    sb.append(" ");
-                }
-                sb.append(curr.key.toString());
-                System.out.println(sb.toString());
-                if (curr.child != null) {
-                    curr.child.print(level + 1);
-                }
-                curr = curr.sibling;
+        List<BinomialHeapNode<Tip>> nodes = new ArrayList<>();
+        nodes.add(topNode);
+        for (int i = 0; i < nodes.size(); i++) {
+             BinomialHeapNode<Tip> curr = nodes.get(i);
+             
+            if (curr.sibling != null) {
+                nodes.add(curr.sibling);
+            }
+            if (curr.child != null) {
+                nodes.add(curr.child);
             }
         }
+           
+        
+        return nodes.stream().map(s -> s.key).collect(Collectors.toList());
     }
+    
+
+
+    
+
+   
 
 }
