@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BinomialHeap.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;1.naloga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">BinomialHeap.java</span></div><h1>BinomialHeap.java</h1><pre class="source lang-java linenums">
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+public class BinomialHeap&lt;Tip extends Comparable&gt; implements Seznam&lt;Tip&gt; {
+    
+     public static class BinomialHeapNode&lt;Tip extends Comparable&gt;{
+        public Tip key;
+        public int degree;
+        public BinomialHeapNode&lt;Tip&gt; parent;
+        public BinomialHeapNode&lt;Tip&gt; child;
+        public BinomialHeapNode&lt;Tip&gt; sibling;
+
+<span class="nc" id="L20">        public BinomialHeapNode() {</span>
+<span class="nc" id="L21">            key = null;</span>
+<span class="nc" id="L22">        }</span>
+
+<span class="fc" id="L24">        public BinomialHeapNode(Tip key) {</span>
+<span class="fc" id="L25">            this.key = key;</span>
+<span class="fc" id="L26">        }</span>
+
+        public int compareTo(BinomialHeapNode&lt;Tip&gt; other) {
+<span class="fc" id="L29">            return this.key.compareTo(other.key);</span>
+        }
+
+        public void print(int level) {
+<span class="nc" id="L33">            BinomialHeapNode&lt;Tip&gt; curr = this;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            while (curr != null) {</span>
+<span class="nc" id="L35">                StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                for (int i = 0; i &lt; level; i++) {</span>
+<span class="nc" id="L37">                    sb.append(&quot; &quot;);</span>
+                }
+<span class="nc" id="L39">                sb.append(curr.key.toString());</span>
+<span class="nc" id="L40">                System.out.println(sb.toString());</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                if (curr.child != null) {</span>
+<span class="nc" id="L42">                    curr.child.print(level + 1);</span>
+                }
+<span class="nc" id="L44">                curr = curr.sibling;</span>
+<span class="nc" id="L45">            }</span>
+<span class="nc" id="L46">        }</span>
+    }
+
+    private BinomialHeapNode&lt;Tip&gt; topNode;
+
+<span class="fc" id="L51">    public BinomialHeap() {</span>
+<span class="fc" id="L52">        topNode = null;</span>
+<span class="fc" id="L53">    }</span>
+
+<span class="fc" id="L55">    public BinomialHeap(BinomialHeapNode&lt;Tip&gt; topNode) {</span>
+<span class="fc" id="L56">        this.topNode = topNode;</span>
+<span class="fc" id="L57">    }</span>
+
+   
+
+    public void clear() {
+<span class="nc" id="L62">        topNode = null;</span>
+<span class="nc" id="L63">    }</span>
+
+
+    public Tip findMinimum() {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (topNode == null) {</span>
+<span class="nc" id="L68">            return null;</span>
+        } else {
+<span class="nc" id="L70">            BinomialHeapNode&lt;Tip&gt; min = topNode;</span>
+<span class="nc" id="L71">            BinomialHeapNode&lt;Tip&gt; next = min.sibling;</span>
+
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            while (next != null) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                if (next.compareTo(min) &lt; 0) {</span>
+<span class="nc" id="L75">                    min = next;</span>
+                }
+<span class="nc" id="L77">                next = next.sibling;</span>
+            }
+
+<span class="nc" id="L80">            return min.key;</span>
+        }
+    }
+    
+    public Tip findMaximum() {
+<span class="fc" id="L85">        BinomialHeapNode&lt;Tip&gt; max = topNode;</span>
+<span class="fc" id="L86">            BinomialHeapNode&lt;Tip&gt; next = max.sibling;</span>
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            while (next != null) {</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                if (next.compareTo(max) &gt; 0) {</span>
+<span class="fc" id="L90">                    max = next;</span>
+                }
+<span class="fc" id="L92">                next = next.sibling;</span>
+            }
+
+<span class="fc" id="L95">            return max.key;</span>
+    }
+
+    // Implemented to test delete/decrease key, runs in O(n) time
+    public BinomialHeapNode&lt;Tip&gt; search(Tip key) {
+<span class="fc" id="L100">        List&lt;BinomialHeapNode&lt;Tip&gt;&gt; nodes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L102">            throw new NoSuchElementException();</span>
+        }
+<span class="fc" id="L104">        nodes.add(topNode);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        while (!nodes.isEmpty()) {</span>
+<span class="fc" id="L106">            BinomialHeapNode&lt;Tip&gt; curr = nodes.get(0);</span>
+<span class="fc" id="L107">            nodes.remove(0);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (curr.key == key) {</span>
+<span class="fc" id="L109">                return curr;</span>
+            }
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
+<span class="fc" id="L112">                nodes.add(curr.sibling);</span>
+            }
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            if (curr.child != null) {</span>
+<span class="fc" id="L115">                nodes.add(curr.child);</span>
+            }
+<span class="fc" id="L117">        }</span>
+<span class="fc" id="L118">        return null;</span>
+    }
+
+//    public void decreaseKey(BinomialHeapNode&lt;Tip&gt; node, Tip newKey) {
+//        node.key = newKey;
+//        bubbleUp(node, false);
+//    }
+
+    public void delete(BinomialHeapNode&lt;Tip&gt; node) {
+<span class="fc" id="L127">        node = bubbleUp(node, true);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (topNode == node) {</span>
+<span class="fc" id="L129">            removeTreeRoot(node, null);</span>
+        } else {
+<span class="fc" id="L131">            BinomialHeapNode&lt;Tip&gt; prev = topNode;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            while (prev.sibling.compareTo(node) != 0) {</span>
+<span class="nc" id="L133">                prev = prev.sibling;</span>
+            }
+<span class="fc" id="L135">            removeTreeRoot(node, prev);</span>
+        }
+<span class="fc" id="L137">    }</span>
+
+        private BinomialHeapNode&lt;Tip&gt; bubbleUp(BinomialHeapNode&lt;Tip&gt; node, boolean toRoot) {
+<span class="fc" id="L140">        BinomialHeapNode&lt;Tip&gt; parent = node.parent;</span>
+<span class="pc bpc" id="L141" title="3 of 6 branches missed.">        while (parent != null &amp;&amp; (toRoot || node.compareTo(parent) &gt; 0)) {</span>
+<span class="fc" id="L142">            Tip temp = node.key;</span>
+<span class="fc" id="L143">            node.key = parent.key;</span>
+<span class="fc" id="L144">            parent.key = temp;</span>
+<span class="fc" id="L145">            node = parent;</span>
+<span class="fc" id="L146">            parent = parent.parent;</span>
+<span class="fc" id="L147">        }</span>
+<span class="fc" id="L148">        return node;</span>
+    }
+
+    
+    public Tip extractMax() {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L154">            throw new NoSuchElementException();</span>
+        }
+
+<span class="fc" id="L157">        BinomialHeapNode&lt;Tip&gt; max = topNode;</span>
+<span class="fc" id="L158">        BinomialHeapNode&lt;Tip&gt; maxPrev = null;</span>
+<span class="fc" id="L159">        BinomialHeapNode&lt;Tip&gt; next = max.sibling;</span>
+<span class="fc" id="L160">        BinomialHeapNode&lt;Tip&gt; nextPrev = max;</span>
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        while (next != null) {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (next.compareTo(max) &gt; 0) {</span>
+<span class="fc" id="L164">                max = next;</span>
+<span class="fc" id="L165">                maxPrev = nextPrev;</span>
+            }
+<span class="fc" id="L167">            nextPrev = next;</span>
+<span class="fc" id="L168">            next = next.sibling;</span>
+        }
+
+<span class="fc" id="L171">        removeTreeRoot(max, maxPrev);</span>
+<span class="fc" id="L172">        return max.key;</span>
+    }
+
+    private void removeTreeRoot(BinomialHeapNode&lt;Tip&gt; root, BinomialHeapNode&lt;Tip&gt; prev) {
+        // Remove root from the heap
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (root == topNode) {</span>
+<span class="fc" id="L178">            topNode = root.sibling;</span>
+        } else {
+<span class="fc" id="L180">            prev.sibling = root.sibling;</span>
+        }
+
+        // Reverse the order of root's children and make a new heap
+<span class="fc" id="L184">        BinomialHeapNode&lt;Tip&gt; newHead = null;</span>
+<span class="fc" id="L185">        BinomialHeapNode&lt;Tip&gt; child = root.child;</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        while (child != null) {</span>
+<span class="fc" id="L187">            BinomialHeapNode&lt;Tip&gt; next = child.sibling;</span>
+<span class="fc" id="L188">            child.sibling = newHead;</span>
+<span class="fc" id="L189">            child.parent = null;</span>
+<span class="fc" id="L190">            newHead = child;</span>
+<span class="fc" id="L191">            child = next;</span>
+<span class="fc" id="L192">        }</span>
+<span class="fc" id="L193">        BinomialHeap&lt;Tip&gt; newHeap = new BinomialHeap&lt;&gt;(newHead);</span>
+
+        // Union the heaps and set its head as this.head
+<span class="fc" id="L196">        topNode = union(newHeap);</span>
+<span class="fc" id="L197">    }</span>
+
+    // Merge two binomial trees of the same order
+    private void linkTree(BinomialHeapNode&lt;Tip&gt; minNodeTree, BinomialHeapNode&lt;Tip&gt; other) {
+<span class="fc" id="L201">        other.parent = minNodeTree;</span>
+<span class="fc" id="L202">        other.sibling = minNodeTree.child;</span>
+<span class="fc" id="L203">        minNodeTree.child = other;</span>
+<span class="fc" id="L204">        minNodeTree.degree++;</span>
+<span class="fc" id="L205">    }</span>
+
+    // Union two binomial heaps into one and return the head
+    public BinomialHeapNode&lt;Tip&gt; union(BinomialHeap&lt;Tip&gt; heap) {
+<span class="fc" id="L209">        BinomialHeapNode&lt;Tip&gt; newHead = merge(this, heap);</span>
+
+<span class="fc" id="L211">        topNode = null;</span>
+<span class="fc" id="L212">        heap.topNode = null;</span>
+
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (newHead == null) {</span>
+<span class="fc" id="L215">            return null;</span>
+        }
+
+<span class="fc" id="L218">        BinomialHeapNode&lt;Tip&gt; prev = null;</span>
+<span class="fc" id="L219">        BinomialHeapNode&lt;Tip&gt; curr = newHead;</span>
+<span class="fc" id="L220">        BinomialHeapNode&lt;Tip&gt; next = newHead.sibling;</span>
+
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        while (next != null) {</span>
+<span class="pc bpc" id="L223" title="1 of 6 branches missed.">            if (curr.degree != next.degree || (next.sibling != null &amp;&amp;</span>
+                    next.sibling.degree == curr.degree)) {
+<span class="fc" id="L225">                prev = curr;</span>
+<span class="fc" id="L226">                curr = next;</span>
+            } else {
+<span class="fc bfc" id="L228" title="All 2 branches covered.">                if (curr.compareTo(next) &gt; 0) {</span>
+<span class="fc" id="L229">                    curr.sibling = next.sibling;</span>
+<span class="fc" id="L230">                    linkTree(curr, next);</span>
+                } else {
+<span class="fc bfc" id="L232" title="All 2 branches covered.">                    if (prev == null) {</span>
+<span class="fc" id="L233">                        newHead = next;</span>
+                    } else {
+<span class="fc" id="L235">                        prev.sibling = next;</span>
+                    }
+
+<span class="fc" id="L238">                    linkTree(next, curr);</span>
+<span class="fc" id="L239">                    curr = next;</span>
+                }
+            }
+
+<span class="fc" id="L243">            next = curr.sibling;</span>
+        }
+
+<span class="fc" id="L246">        return newHead;</span>
+    }
+
+    private static &lt;Tip extends Comparable&lt;Tip&gt;&gt; BinomialHeapNode&lt;Tip&gt; merge(
+            BinomialHeap&lt;Tip&gt; heap1, BinomialHeap&lt;Tip&gt; heap2) {
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (heap1.topNode == null) {</span>
+<span class="fc" id="L252">            return heap2.topNode;</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        } else if (heap2.topNode == null) {</span>
+<span class="fc" id="L254">            return heap1.topNode;</span>
+        } else {
+            BinomialHeapNode&lt;Tip&gt; head;
+<span class="fc" id="L257">            BinomialHeapNode&lt;Tip&gt; heap1Next = heap1.topNode;</span>
+<span class="fc" id="L258">            BinomialHeapNode&lt;Tip&gt; heap2Next = heap2.topNode;</span>
+
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if (heap1.topNode.degree &lt;= heap2.topNode.degree) {</span>
+<span class="fc" id="L261">                head = heap1.topNode;</span>
+<span class="fc" id="L262">                heap1Next = heap1Next.sibling;</span>
+            } else {
+<span class="fc" id="L264">                head = heap2.topNode;</span>
+<span class="fc" id="L265">                heap2Next = heap2Next.sibling;</span>
+            }
+
+<span class="fc" id="L268">            BinomialHeapNode&lt;Tip&gt; tail = head;</span>
+
+<span class="fc bfc" id="L270" title="All 4 branches covered.">            while (heap1Next != null &amp;&amp; heap2Next != null) {</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">                if (heap1Next.degree &lt;= heap2Next.degree) {</span>
+<span class="fc" id="L272">                    tail.sibling = heap1Next;</span>
+<span class="fc" id="L273">                    heap1Next = heap1Next.sibling;</span>
+                } else {
+<span class="fc" id="L275">                    tail.sibling = heap2Next;</span>
+<span class="fc" id="L276">                    heap2Next = heap2Next.sibling;</span>
+                }
+
+<span class="fc" id="L279">                tail = tail.sibling;</span>
+            }
+
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            if (heap1Next != null) {</span>
+<span class="fc" id="L283">                tail.sibling = heap1Next;</span>
+            } else {
+<span class="fc" id="L285">                tail.sibling = heap2Next;</span>
+            }
+
+<span class="fc" id="L288">            return head;</span>
+        }
+    }
+
+    public void print() {
+<span class="nc" id="L293">        System.out.println(&quot;Binomial heap:&quot;);</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (topNode != null) {</span>
+<span class="nc" id="L295">            topNode.print(0);</span>
+        }
+<span class="nc" id="L297">    }</span>
+
+    @Override
+    public void add(Tip e) {
+<span class="fc" id="L301">        BinomialHeapNode&lt;Tip&gt; node = new BinomialHeapNode&lt;&gt;(e);</span>
+<span class="fc" id="L302">        BinomialHeap&lt;Tip&gt; tempHeap = new BinomialHeap&lt;&gt;(node);</span>
+<span class="fc" id="L303">        topNode = union(tempHeap);</span>
+<span class="fc" id="L304">    }</span>
+
+    @Override
+    public Tip removeFirst() {
+<span class="fc" id="L308">        return extractMax();</span>
+    }
+
+    @Override
+    public Tip getFirst() {
+<span class="fc bfc" id="L313" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L314">            throw new NoSuchElementException();</span>
+        }
+<span class="fc" id="L316">         return findMaximum();</span>
+    }
+
+    @Override
+    public int size() {
+<span class="fc bfc" id="L321" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L322">            return 0;</span>
+        } else {
+<span class="fc" id="L324">            BinomialHeapNode&lt;Tip&gt; node = topNode;</span>
+<span class="fc" id="L325">            int count = 0;</span>
+            do {
+<span class="fc" id="L327">                count += Math.pow(2, node.degree );</span>
+<span class="fc" id="L328">                node = node.sibling;</span>
+                
+<span class="fc bfc" id="L330" title="All 2 branches covered.">            }while (node != null);</span>
+
+<span class="fc" id="L332">            return count;</span>
+        }
+    }
+
+    @Override
+    public int depth() {
+<span class="fc bfc" id="L338" title="All 2 branches covered.">       if (topNode == null) {</span>
+<span class="fc" id="L339">            return 0;</span>
+        } else {
+<span class="fc" id="L341">            BinomialHeapNode&lt;Tip&gt; max = topNode;</span>
+<span class="fc" id="L342">            BinomialHeapNode&lt;Tip&gt; next = max.sibling;</span>
+
+<span class="fc bfc" id="L344" title="All 2 branches covered.">            while (next != null) {</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">                if (next.degree &gt; max.degree) {</span>
+<span class="fc" id="L346">                    max = next;</span>
+                }
+<span class="fc" id="L348">                next = next.sibling;</span>
+            }
+
+<span class="fc" id="L351">            return max.degree;</span>
+        }
+    }
+
+    @Override
+    public Tip remove(Tip e) {
+<span class="fc" id="L357">        BinomialHeapNode node = search(e);</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">        if (node != null) {</span>
+<span class="fc" id="L359">            delete(search(e));</span>
+<span class="fc" id="L360">            return e;</span>
+        }
+        else{
+<span class="fc" id="L363">            throw new NoSuchElementException();</span>
+        }
+    }
+
+    @Override
+    public boolean exists(Tip e) {
+<span class="fc bfc" id="L369" title="All 4 branches covered.">        return topNode != null &amp;&amp; search(e) != null;</span>
+    }
+    
+    @Override
+    public boolean isEmpty() {
+<span class="fc bfc" id="L374" title="All 2 branches covered.">        return topNode == null;</span>
+    }
+
+    @Override
+    public List&lt;Tip&gt; asList() {
+<span class="fc" id="L379">        List&lt;BinomialHeapNode&lt;Tip&gt;&gt; currentRow = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L380">        List&lt;BinomialHeapNode&lt;Tip&gt;&gt; nextRow = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L381">        LinkedHashMap hashMap = new LinkedHashMap();</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L383">            return new ArrayList&lt;&gt;(hashMap.values());</span>
+        }
+<span class="fc" id="L385">        currentRow.add(topNode);</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        while (!currentRow.isEmpty()) {</span>
+<span class="fc" id="L387">            BinomialHeapNode&lt;Tip&gt; curr = currentRow.get(0);</span>
+<span class="fc" id="L388">            hashMap.put(curr.key, curr.key);</span>
+<span class="fc" id="L389">            currentRow.remove(0);</span>
+
+<span class="fc bfc" id="L391" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
+<span class="fc" id="L392">                currentRow.add(curr.sibling);</span>
+            }
+<span class="fc bfc" id="L394" title="All 2 branches covered.">            if (curr.child != null) {</span>
+<span class="fc" id="L395">                BinomialHeapNode&lt;Tip&gt; child = curr.child;</span>
+<span class="fc" id="L396">                nextRow.add(child);</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">                while (child.sibling != null) {</span>
+<span class="fc" id="L398">                    nextRow.add(child.sibling);</span>
+<span class="fc" id="L399">                    child = child.sibling;</span>
+                    
+                }
+            }
+<span class="fc bfc" id="L403" title="All 2 branches covered.">            if (currentRow.isEmpty()) {</span>
+<span class="fc" id="L404">                currentRow.addAll(nextRow);</span>
+<span class="fc" id="L405">                nextRow.clear();</span>
+            }
+<span class="fc" id="L407">        }</span>
+<span class="fc" id="L408">        return new ArrayList&lt;&gt;(hashMap.values());</span>
+    }
+    
+
+
+    
+
+   
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
