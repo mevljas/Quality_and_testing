@@ -1,4 +1,5 @@
 
+import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -21,6 +22,7 @@ public class SeznamiUVTest {
         uv.processInput("use pv");
         uv.processInput("use sk");
         uv.processInput("use bst");
+        uv.processInput("use bk");
     }
 
     @Test
@@ -73,6 +75,14 @@ public class SeznamiUVTest {
         uv.processInput("use bst");
         otherMethods();
         testBst(true);
+        reset();
+    }
+    
+    @Test
+    public void testUseBinomskaKopica() {
+        uv.processInput("use bk");
+        otherMethods();
+        testBinomskaKopica(true);
         reset();
     }
 
@@ -139,6 +149,12 @@ public class SeznamiUVTest {
         reset();
         testAddTestSequence();
         reset();
+        testAsListOne();
+        reset();
+        testAsListMultiple();
+        reset();
+        testAsListEmpty();
+        reset();
 
     }
 
@@ -198,13 +214,24 @@ public class SeznamiUVTest {
 
     public void testDepthOne() {
         assertEquals("OK", uv.processInput("add Test"));
-        assertEquals("1", uv.processInput("depth"));
+        if (uv.seznam instanceof BinomialHeap) {
+            assertEquals("0", uv.processInput("depth"));
+        }
+        else{
+            assertEquals("1", uv.processInput("depth"));
+        }
+        
     }
 
     public void testDepthTwo() {
         assertEquals("OK", uv.processInput("add Test1"));
         assertEquals("OK", uv.processInput("add Test2"));
-        assertEquals("2", uv.processInput("depth"));
+        if (uv.seznam instanceof BinomialHeap) {
+            assertEquals("1", uv.processInput("depth"));
+        }
+        else{
+            assertEquals("2", uv.processInput("depth"));
+        }
     }
 
     public void testIsEmptyEmpty() {
@@ -308,6 +335,44 @@ public class SeznamiUVTest {
         assertEquals("OK", uv.processInput("add Test1"));
         assertEquals("OK", uv.processInput("add Test5"));
     }
+    
+     public void testResetOne(){
+        uv.processInput("add Test4");
+        uv.processInput("reset");
+        assertEquals(0, uv.processInput("size"));
+    }
+     
+     
+    public void testResetMultiple(){
+        testAddTestSequence();
+        uv.processInput("reset");
+        assertEquals(0, uv.processInput("size"));
+    }
+    
+    public void testResetEmpty(){
+        uv.processInput("reset");
+        assertEquals(0, uv.processInput("size"));
+    }
+    
+    
+    public void testAsListOne() {
+        uv.processInput("add Test1");
+        assertEquals("Test1 " ,uv.processInput("asList"));
+    }
+    
+    public void testAsListMultiple() {
+        uv.processInput("add Test1");
+        uv.processInput("add Test2");
+        uv.processInput("add Test3");
+        String list = uv.processInput("asList");
+        assertTrue(list.contains("Test1"));
+        assertTrue(list.contains("Test2"));
+        assertTrue(list.contains("Test3"));
+    }
+    
+    public void testAsListEmpty() {
+        assertEquals("" ,uv.processInput("asList"));
+    }
 
     public void testSklad(boolean add) {
         if (add) {
@@ -347,6 +412,17 @@ public class SeznamiUVTest {
         uv.processInput("use bst");
         uv.processInput("add Test1");
         assertEquals("Error: Duplicated entry", uv.processInput("add Test1"));
+    }
+    
+    public void testBinomskaKopica(boolean add) {
+        if (add) {
+            testAddTestSequence();
+        }
+        assertEquals("Test5", uv.processInput("remove_first"));
+        assertEquals("Test4", uv.processInput("remove_first"));
+        assertEquals("Test3", uv.processInput("remove_first"));
+        assertEquals("Test2", uv.processInput("remove_first"));
+        assertEquals("Test1", uv.processInput("remove_first"));
     }
 
 }

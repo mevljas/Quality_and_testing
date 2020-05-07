@@ -144,9 +144,9 @@ public class PrioritetnaVrsta<Tip extends Comparable> implements Seznam<Tip> {
     @Override
     public List<Tip> asList() {
         ArrayList<Tip> list = new ArrayList();
-        for (Object object : heap) {
-            if (object != null) {
-                list.add((Tip) object);
+        for (int i = 0; i < end; i++) {
+            if (heap[i] != null) {
+                list.add((Tip) heap[i]);
             }
             
         }

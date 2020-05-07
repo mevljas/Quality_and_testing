@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SeznamiUV.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;1.naloga&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SeznamiUV.java</span></div><h1>SeznamiUV.java</h1><pre class="source lang-java linenums">
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SeznamiUV {
@@ -8,31 +9,32 @@ public class SeznamiUV {
     HashMap&lt;String, Seznam&lt;String&gt;&gt; seznami;
     Seznam&lt;String&gt; seznam;
 
-<span class="fc" id="L11">    public SeznamiUV() {</span>
-<span class="fc" id="L12">        seznami = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L13">        seznami.put(&quot;pv&quot;, new PrioritetnaVrsta&lt;&gt;());</span>
-<span class="fc" id="L14">        seznami.put(&quot;sk&quot;, new Sklad&lt;&gt;());</span>
-<span class="fc" id="L15">        seznami.put(&quot;bst&quot;, new Bst&lt;&gt;());</span>
+<span class="fc" id="L12">    public SeznamiUV() {</span>
+<span class="fc" id="L13">        seznami = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L14">        seznami.put(&quot;pv&quot;, new PrioritetnaVrsta&lt;&gt;());</span>
+<span class="fc" id="L15">        seznami.put(&quot;sk&quot;, new Sklad&lt;&gt;());</span>
+<span class="fc" id="L16">        seznami.put(&quot;bst&quot;, new Bst&lt;&gt;());</span>
+<span class="fc" id="L17">        seznami.put(&quot;bk&quot;, new BinomialHeap&lt;&gt;());</span>
 
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L19">    }</span>
 
     public String processInput(String input) {
-<span class="fc" id="L20">        Scanner sc = new Scanner(input);</span>
-<span class="fc" id="L21">        String token = sc.next();</span>
-<span class="fc" id="L22">        String result = &quot;OK&quot;, tmp;</span>
+<span class="fc" id="L22">        Scanner sc = new Scanner(input);</span>
+<span class="fc" id="L23">        String token = sc.next();</span>
+<span class="fc" id="L24">        String result = &quot;OK&quot;, tmp;</span>
         try {
-<span class="fc bfc" id="L24" title="All 2 branches covered.">            if (token.equals(&quot;use&quot;)) {</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
-<span class="fc" id="L26">                    seznam = seznami.get(sc.next());</span>
-<span class="fc bfc" id="L27" title="All 2 branches covered.">                    if (null == seznam) {</span>
-<span class="fc" id="L28">                        result = &quot;Error: please specify a correct data structure type (pv, sk, bst)&quot;;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">            if (token.equals(&quot;use&quot;)) {</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
+<span class="fc" id="L28">                    seznam = seznami.get(sc.next());</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                    if (null == seznam) {</span>
+<span class="fc" id="L30">                        result = &quot;Error: please specify a correct data structure type (pv, sk, bst)&quot;;</span>
                     }
                 } else {
-<span class="fc" id="L31">                    result = &quot;Error: please specify a data structure type (pv, sk, bst)&quot;;</span>
+<span class="fc" id="L33">                    result = &quot;Error: please specify a data structure type (pv, sk, bst)&quot;;</span>
                 }
-<span class="fc bfc" id="L33" title="All 2 branches covered.">            } else if (token.equals(&quot;add&quot;)) {</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
-<span class="fc" id="L35">                    tmp = sc.next();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            } else if (token.equals(&quot;add&quot;)) {</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
+<span class="fc" id="L37">                    tmp = sc.next();</span>
 //                        if (tmp.startsWith(&quot;\&quot;&quot;)) {
 //                            tmp = tmp.substring(1);
 //                            while (sc.hasNext()) {
@@ -50,77 +52,88 @@ public class SeznamiUV {
 //                                break;
 //                            }
 //                        }
-<span class="fc" id="L53">                    seznam.add(tmp);</span>
+<span class="fc" id="L55">                    seznam.add(tmp);</span>
                 } else {
-<span class="fc" id="L55">                    result = &quot;Error: please specify a string&quot;;</span>
+<span class="fc" id="L57">                    result = &quot;Error: please specify a string&quot;;</span>
                 }
-<span class="fc bfc" id="L57" title="All 2 branches covered.">            } else if (token.equals(&quot;remove_first&quot;)) {</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">                if (seznam.isEmpty()) {</span>
-<span class="fc" id="L59">                    result = &quot;Error: data structure is empty&quot;;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            } else if (token.equals(&quot;remove_first&quot;)) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                if (seznam.isEmpty()) {</span>
+<span class="fc" id="L61">                    result = &quot;Error: data structure is empty&quot;;</span>
                 } else {
-<span class="fc" id="L61">                    result = seznam.removeFirst();</span>
+<span class="fc" id="L63">                    result = seznam.removeFirst();</span>
                 }
 
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            } else if (token.equals(&quot;size&quot;)) {</span>
-<span class="fc" id="L65">                result = String.format(&quot;%d&quot;, seznam.size());</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">            } else if (token.equals(&quot;get_first&quot;)) {</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if (!seznam.isEmpty()) {</span>
-<span class="fc" id="L68">                    result = seznam.getFirst();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            } else if (token.equals(&quot;size&quot;)) {</span>
+<span class="fc" id="L67">                result = String.format(&quot;%d&quot;, seznam.size());</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            } else if (token.equals(&quot;get_first&quot;)) {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">                if (!seznam.isEmpty()) {</span>
+<span class="fc" id="L70">                    result = seznam.getFirst();</span>
                 } else {
-<span class="fc" id="L70">                    result = &quot;Error: data structure is empty&quot;;</span>
+<span class="fc" id="L72">                    result = &quot;Error: data structure is empty&quot;;</span>
                 }
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            } else if (token.equals(&quot;depth&quot;)) {</span>
-<span class="fc" id="L73">                return String.format(&quot;%d&quot;, seznam.depth());</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">            } else if (token.equals(&quot;is_empty&quot;)) {</span>
-<span class="fc" id="L75">                return String.format(&quot;Data structure is%s empty&quot;,</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">                        seznam.isEmpty() ? &quot;&quot; : &quot; not&quot;);</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">            } else if (token.equals(&quot;exists&quot;)) {</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            } else if (token.equals(&quot;depth&quot;)) {</span>
+<span class="fc" id="L75">                return String.format(&quot;%d&quot;, seznam.depth());</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            } else if (token.equals(&quot;is_empty&quot;)) {</span>
+<span class="fc" id="L77">                return String.format(&quot;Data structure is%s empty&quot;,</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                        seznam.isEmpty() ? &quot;&quot; : &quot; not&quot;);</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            } else if (token.equals(&quot;exists&quot;)) {</span>
 
-<span class="fc bfc" id="L79" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
-<span class="fc bfc" id="L80" title="All 2 branches covered.">                    if (seznam.isEmpty()) {</span>
-<span class="fc" id="L81">                        result = &quot;Data structure is empty&quot;;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                    if (seznam.isEmpty()) {</span>
+<span class="fc" id="L83">                        result = &quot;Data structure is empty&quot;;</span>
                     } else {
-<span class="fc bfc" id="L83" title="All 2 branches covered.">                        result = &quot;Element &quot; + (seznam.exists(sc.next()) ? &quot;exists &quot; : &quot;doesn't exist &quot;) + &quot;in data structure&quot;;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">                        result = &quot;Element &quot; + (seznam.exists(sc.next()) ? &quot;exists &quot; : &quot;doesn't exist &quot;) + &quot;in data structure&quot;;</span>
                     }
 
                 } else {
-<span class="fc" id="L87">                    result = &quot;Please specify a string&quot;;</span>
+<span class="fc" id="L89">                    result = &quot;Please specify a string&quot;;</span>
                 }
-<span class="fc bfc" id="L89" title="All 2 branches covered.">            } else if (token.equals(&quot;remove&quot;)) {</span>
-<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">                    if (seznam.isEmpty()) {</span>
-<span class="fc" id="L92">                        result = &quot;Data structure is empty&quot;;</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            } else if (token.equals(&quot;remove&quot;)) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">                if (sc.hasNext()) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                    if (seznam.isEmpty()) {</span>
+<span class="fc" id="L94">                        result = &quot;Data structure is empty&quot;;</span>
                     } else {
-<span class="fc" id="L94">                        result = seznam.remove(sc.next());</span>
+<span class="fc" id="L96">                        result = seznam.remove(sc.next());</span>
                     }
 
                 } else {
-<span class="fc" id="L98">                    result = &quot;Error: please specify a string&quot;;</span>
+<span class="fc" id="L100">                    result = &quot;Error: please specify a string&quot;;</span>
                 }
-<span class="fc bfc" id="L100" title="All 2 branches covered.">            } else if (token.equals(&quot;reset&quot;)) {</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">                if (seznam instanceof Sklad) {</span>
-<span class="fc" id="L102">                    seznam = new Sklad&lt;&gt;();</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">                } else if (seznam instanceof Bst) {</span>
-<span class="fc" id="L104">                    seznam = new Bst&lt;&gt;();</span>
-                } else {
-<span class="fc" id="L106">                    seznam = new PrioritetnaVrsta&lt;&gt;();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            } else if (token.equals(&quot;reset&quot;)) {</span>
+//                if (seznam instanceof Sklad) {
+//                    seznam = new Sklad&lt;&gt;();
+//                } else if (seznam instanceof Bst) {
+//                    seznam = new Bst&lt;&gt;();
+//                } else {
+//                    seznam = new PrioritetnaVrsta&lt;&gt;();
+//                }
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                while (!seznam.isEmpty()) {</span>
+<span class="fc" id="L111">                    seznam.removeFirst();</span>
+                    
                 }
 
-            } else {
-<span class="fc" id="L110">                result = &quot;Error: invalid command&quot;;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            } else if (token.equals(&quot;asList&quot;)) {</span>
+<span class="nc" id="L116">                StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L117">                List l = seznam.asList();</span>
+<span class="nc" id="L118">                l.forEach((object) -&gt; {</span>
+<span class="nc" id="L119">                    sb.append(object).append(&quot; &quot;);</span>
+<span class="nc" id="L120">                });</span>
+<span class="nc" id="L121">                result = sb.toString();</span>
+<span class="nc" id="L122">            } else {</span>
+<span class="fc" id="L123">                result = &quot;Error: invalid command&quot;;</span>
             }
 
 //        } catch (UnsupportedOperationException e) {
 //            result = &quot;Error: Operation not supported&quot;;
-<span class="fc" id="L115">        } catch (java.lang.IllegalArgumentException e) {</span>
-<span class="fc" id="L116">            result = &quot;Error: Duplicated entry&quot;;</span>
-<span class="fc" id="L117">        } catch (java.util.NoSuchElementException e) {</span>
-<span class="fc" id="L118">            result = &quot;Error: element does not exist in data structure&quot;;</span>
-<span class="fc" id="L119">        } catch (NullPointerException e) {</span>
-<span class="fc" id="L120">            result = &quot;Error: data structure is not selected&quot;;</span>
-<span class="fc" id="L121">        }</span>
+<span class="fc" id="L128">        } catch (java.lang.IllegalArgumentException e) {</span>
+<span class="fc" id="L129">            result = &quot;Error: Duplicated entry&quot;;</span>
+<span class="fc" id="L130">        } catch (java.util.NoSuchElementException e) {</span>
+<span class="fc" id="L131">            result = &quot;Error: element does not exist in data structure&quot;;</span>
+<span class="fc" id="L132">        } catch (NullPointerException e) {</span>
+<span class="fc" id="L133">            result = &quot;Error: data structure is not selected&quot;;</span>
+<span class="fc" id="L134">        }</span>
 
-<span class="fc" id="L123">        return result;</span>
+<span class="fc" id="L136">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

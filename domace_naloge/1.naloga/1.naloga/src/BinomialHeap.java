@@ -105,7 +105,7 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         while (!nodes.isEmpty()) {
             BinomskaKopicaNode<Tip> curr = nodes.get(0);
             nodes.remove(0);
-            if (curr.key == key) {
+            if (curr.key.compareTo(key) == 0) {
                 return curr;
             }
             if (curr.sibling != null) {

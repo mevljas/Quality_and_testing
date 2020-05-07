@@ -100,12 +100,16 @@ public class SeznamiUV {
                     result = "Error: please specify a string";
                 }
             } else if (token.equals("reset")) {
-                if (seznam instanceof Sklad) {
-                    seznam = new Sklad<>();
-                } else if (seznam instanceof Bst) {
-                    seznam = new Bst<>();
-                } else {
-                    seznam = new PrioritetnaVrsta<>();
+//                if (seznam instanceof Sklad) {
+//                    seznam = new Sklad<>();
+//                } else if (seznam instanceof Bst) {
+//                    seznam = new Bst<>();
+//                } else {
+//                    seznam = new PrioritetnaVrsta<>();
+//                }
+                while (!seznam.isEmpty()) {
+                    seznam.removeFirst();
+                    
                 }
 
             } else if (token.equals("asList")) {
