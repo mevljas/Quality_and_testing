@@ -1,6 +1,7 @@
 
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SeznamiUV {
@@ -13,6 +14,7 @@ public class SeznamiUV {
         seznami.put("pv", new PrioritetnaVrsta<>());
         seznami.put("sk", new Sklad<>());
         seznami.put("bst", new Bst<>());
+        seznami.put("bk", new BinomialHeap<>());
 
     }
 
@@ -106,6 +108,13 @@ public class SeznamiUV {
                     seznam = new PrioritetnaVrsta<>();
                 }
 
+            } else if (token.equals("asList")) {
+                StringBuilder sb = new StringBuilder();
+                List l = seznam.asList();
+                l.forEach((object) -> {
+                    sb.append(object).append(" ");
+                });
+                result = sb.toString();
             } else {
                 result = "Error: invalid command";
             }
