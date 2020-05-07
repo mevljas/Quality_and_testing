@@ -242,10 +242,8 @@ public class SkladTest {
     public void testRemoveEmpty() {
         instance.remove("test");
     }
-    
-    // testiranje metode asList
-   
 
+    // testiranje metode asList
     @Test
     public void testAsListOne() {
         instance.add("Test1");
@@ -275,10 +273,10 @@ public class SkladTest {
         assertEquals("Test1", l.get(7));
         assertEquals(8, instance.asList().size());
     }
-    
+
     @Test
     public void testasListOnEmpty() {
-        assertTrue( instance.asList().isEmpty());
+        assertTrue(instance.asList().isEmpty());
     }
 
 }

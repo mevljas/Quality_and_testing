@@ -109,7 +109,7 @@ public class SeznamiUV {
 //                }
                 while (!seznam.isEmpty()) {
                     seznam.removeFirst();
-                    
+
                 }
 
             } else if (token.equals("asList")) {

@@ -109,17 +109,17 @@ public class SeznamiUV {
 //                }
 <span class="fc bfc" id="L110" title="All 2 branches covered.">                while (!seznam.isEmpty()) {</span>
 <span class="fc" id="L111">                    seznam.removeFirst();</span>
-                    
+
                 }
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            } else if (token.equals(&quot;asList&quot;)) {</span>
-<span class="nc" id="L116">                StringBuilder sb = new StringBuilder();</span>
-<span class="nc" id="L117">                List l = seznam.asList();</span>
-<span class="nc" id="L118">                l.forEach((object) -&gt; {</span>
-<span class="nc" id="L119">                    sb.append(object).append(&quot; &quot;);</span>
-<span class="nc" id="L120">                });</span>
-<span class="nc" id="L121">                result = sb.toString();</span>
-<span class="nc" id="L122">            } else {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            } else if (token.equals(&quot;asList&quot;)) {</span>
+<span class="fc" id="L116">                StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L117">                List l = seznam.asList();</span>
+<span class="fc" id="L118">                l.forEach((object) -&gt; {</span>
+<span class="fc" id="L119">                    sb.append(object).append(&quot; &quot;);</span>
+<span class="fc" id="L120">                });</span>
+<span class="fc" id="L121">                result = sb.toString();</span>
+<span class="fc" id="L122">            } else {</span>
 <span class="fc" id="L123">                result = &quot;Error: invalid command&quot;;</span>
             }
 

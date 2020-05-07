@@ -2,155 +2,152 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PrioritetnaVrsta&lt;Tip extends Comparable&gt; implements Seznam&lt;Tip&gt; {
 
     private Object[] heap;
-<span class="fc" id="L9">    private int end = 0;</span>
+<span class="fc" id="L8">    private int end = 0;</span>
 
     public PrioritetnaVrsta() {
-<span class="fc" id="L12">        this(100);</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L11">        this(100);</span>
+<span class="fc" id="L12">    }</span>
 
-<span class="fc" id="L15">    public PrioritetnaVrsta(int maxSize) {</span>
-<span class="fc" id="L16">        heap = new Object[maxSize];</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L14">    public PrioritetnaVrsta(int maxSize) {</span>
+<span class="fc" id="L15">        heap = new Object[maxSize];</span>
+<span class="fc" id="L16">    }</span>
 
     private void bubbleUp() {
-<span class="fc" id="L20">        int eltIdx = end - 1;</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        while (eltIdx &gt;= 0) {</span>
-<span class="fc" id="L22">            Tip elt = (Tip) heap[eltIdx];</span>
-<span class="fc" id="L23">            int childIdx = eltIdx * 2 + 1;</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">            if (childIdx &lt; end) {</span>
-<span class="fc" id="L25">                Tip child = (Tip) heap[childIdx];</span>
-<span class="fc bfc" id="L26" title="All 4 branches covered.">                if (childIdx + 1 &lt; end &amp;&amp; child.compareTo(heap[childIdx + 1]) &lt; 0) {</span>
-<span class="fc" id="L27">                    child = (Tip) heap[++childIdx];</span>
+<span class="fc" id="L19">        int eltIdx = end - 1;</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        while (eltIdx &gt;= 0) {</span>
+<span class="fc" id="L21">            Tip elt = (Tip) heap[eltIdx];</span>
+<span class="fc" id="L22">            int childIdx = eltIdx * 2 + 1;</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">            if (childIdx &lt; end) {</span>
+<span class="fc" id="L24">                Tip child = (Tip) heap[childIdx];</span>
+<span class="fc bfc" id="L25" title="All 4 branches covered.">                if (childIdx + 1 &lt; end &amp;&amp; child.compareTo(heap[childIdx + 1]) &lt; 0) {</span>
+<span class="fc" id="L26">                    child = (Tip) heap[++childIdx];</span>
                 }
-<span class="fc bfc" id="L29" title="All 2 branches covered.">                if (elt.compareTo(child) &gt;= 0) {</span>
-<span class="fc" id="L30">                    return;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">                if (elt.compareTo(child) &gt;= 0) {</span>
+<span class="fc" id="L29">                    return;</span>
                 }
-<span class="fc" id="L32">                swap(eltIdx, childIdx);</span>
+<span class="fc" id="L31">                swap(eltIdx, childIdx);</span>
             }
-<span class="fc bfc" id="L34" title="All 2 branches covered.">            eltIdx = eltIdx % 2 == 1 ? (eltIdx - 1) / 2 : (eltIdx - 2) / 2;</span>
-<span class="fc" id="L35">        }</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            eltIdx = eltIdx % 2 == 1 ? (eltIdx - 1) / 2 : (eltIdx - 2) / 2;</span>
+<span class="fc" id="L34">        }</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public void add(Tip e) {
-<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (end == heap.length) {</span>
-<span class="fc" id="L41">            resize();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (end == heap.length) {</span>
+<span class="fc" id="L40">            resize();</span>
         }
-<span class="fc" id="L43">        heap[end++] = e;</span>
-<span class="fc" id="L44">        bubbleUp();</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L42">        heap[end++] = e;</span>
+<span class="fc" id="L43">        bubbleUp();</span>
+<span class="fc" id="L44">    }</span>
 
     private void resize() {
-<span class="fc" id="L48">        Object[] tmp = heap;</span>
-<span class="fc" id="L49">        heap = new Object[2 * heap.length];</span>
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
-<span class="fc" id="L51">            heap[i] = tmp[i];</span>
+<span class="fc" id="L47">        Object[] tmp = heap;</span>
+<span class="fc" id="L48">        heap = new Object[2 * heap.length];</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
+<span class="fc" id="L50">            heap[i] = tmp[i];</span>
         }
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L52">    }</span>
 
     private void bubbleDown(int start) {
-<span class="fc" id="L56">        int eltIdx = start;</span>
-<span class="fc" id="L57">        int childIdx = eltIdx * 2 + 1;</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        while (childIdx &lt; end) {</span>
-<span class="fc" id="L59">            Tip elt = (Tip) heap[eltIdx];</span>
-<span class="fc" id="L60">            Tip child = (Tip) heap[childIdx];</span>
-<span class="fc bfc" id="L61" title="All 4 branches covered.">            if (childIdx + 1 &lt; end &amp;&amp; child.compareTo(heap[childIdx + 1]) &lt; 0) {</span>
-<span class="fc" id="L62">                child = (Tip) heap[++childIdx];</span>
+<span class="fc" id="L55">        int eltIdx = start;</span>
+<span class="fc" id="L56">        int childIdx = eltIdx * 2 + 1;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        while (childIdx &lt; end) {</span>
+<span class="fc" id="L58">            Tip elt = (Tip) heap[eltIdx];</span>
+<span class="fc" id="L59">            Tip child = (Tip) heap[childIdx];</span>
+<span class="fc bfc" id="L60" title="All 4 branches covered.">            if (childIdx + 1 &lt; end &amp;&amp; child.compareTo(heap[childIdx + 1]) &lt; 0) {</span>
+<span class="fc" id="L61">                child = (Tip) heap[++childIdx];</span>
             }
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (elt.compareTo(child) &gt;= 0) {</span>
-<span class="fc" id="L65">                return;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (elt.compareTo(child) &gt;= 0) {</span>
+<span class="fc" id="L64">                return;</span>
             }
-<span class="fc" id="L67">            swap(eltIdx, childIdx);</span>
-<span class="fc" id="L68">            eltIdx = childIdx;</span>
-<span class="fc" id="L69">            childIdx = eltIdx * 2 + 1;</span>
-<span class="fc" id="L70">        }</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L66">            swap(eltIdx, childIdx);</span>
+<span class="fc" id="L67">            eltIdx = childIdx;</span>
+<span class="fc" id="L68">            childIdx = eltIdx * 2 + 1;</span>
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">    }</span>
 
     @Override
     public Tip removeFirst() {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
-<span class="fc" id="L76">            throw new java.util.NoSuchElementException();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
+<span class="fc" id="L75">            throw new java.util.NoSuchElementException();</span>
         }
-<span class="fc" id="L78">        Tip elt = (Tip) heap[0];</span>
-<span class="fc" id="L79">        swap(0, --end);</span>
-<span class="fc" id="L80">        bubbleDown(0);</span>
-<span class="fc" id="L81">        return elt;</span>
+<span class="fc" id="L77">        Tip elt = (Tip) heap[0];</span>
+<span class="fc" id="L78">        swap(0, --end);</span>
+<span class="fc" id="L79">        bubbleDown(0);</span>
+<span class="fc" id="L80">        return elt;</span>
     }
 
     private void swap(int a, int b) {
-<span class="fc" id="L85">        Object tmp = heap[a];</span>
-<span class="fc" id="L86">        heap[a] = heap[b];</span>
-<span class="fc" id="L87">        heap[b] = tmp;</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L84">        Object tmp = heap[a];</span>
+<span class="fc" id="L85">        heap[a] = heap[b];</span>
+<span class="fc" id="L86">        heap[b] = tmp;</span>
+<span class="fc" id="L87">    }</span>
 
     @Override
     public Tip getFirst() {
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
-<span class="fc" id="L93">            throw new java.util.NoSuchElementException();</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
+<span class="fc" id="L92">            throw new java.util.NoSuchElementException();</span>
         }
-<span class="fc" id="L95">        return (Tip) heap[0];</span>
+<span class="fc" id="L94">        return (Tip) heap[0];</span>
     }
 
     @Override
     public int depth() {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (end == 0) {</span>
-<span class="fc" id="L101">            return 0;</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (end == 0) {</span>
+<span class="fc" id="L100">            return 0;</span>
         }
-<span class="fc" id="L103">        return (int) (Math.log(end) / Math.log(2)) + 1;</span>
+<span class="fc" id="L102">        return (int) (Math.log(end) / Math.log(2)) + 1;</span>
     }
 
     @Override
     public boolean isEmpty() {
-<span class="fc bfc" id="L108" title="All 2 branches covered.">        return end == 0;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        return end == 0;</span>
     }
 
     @Override
     public int size() {
-<span class="fc" id="L113">        return end;</span>
+<span class="fc" id="L112">        return end;</span>
     }
 
     @Override
     public Tip remove(Tip e) {
         Tip temp;
-<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">            if (heap[i].equals(e)) {</span>
-<span class="fc" id="L121">                temp = (Tip) heap[i];</span>
-<span class="fc" id="L122">                swap(i, end - 1);</span>
-<span class="fc" id="L123">                heap[end - 1] = 0;</span>
-<span class="fc" id="L124">                end--;</span>
-<span class="fc" id="L125">                bubbleDown(i);</span>
-<span class="fc" id="L126">                return temp;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (heap[i].equals(e)) {</span>
+<span class="fc" id="L120">                temp = (Tip) heap[i];</span>
+<span class="fc" id="L121">                swap(i, end - 1);</span>
+<span class="fc" id="L122">                heap[end - 1] = 0;</span>
+<span class="fc" id="L123">                end--;</span>
+<span class="fc" id="L124">                bubbleDown(i);</span>
+<span class="fc" id="L125">                return temp;</span>
 
             }
         }
-<span class="fc" id="L130">        throw new java.util.NoSuchElementException();</span>
+<span class="fc" id="L129">        throw new java.util.NoSuchElementException();</span>
     }
 
     @Override
     public boolean exists(Tip e) {
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (heap[i].equals(e)) {</span>
-<span class="fc" id="L137">                return true;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            if (heap[i].equals(e)) {</span>
+<span class="fc" id="L136">                return true;</span>
             }
         }
 
-<span class="fc" id="L141">        return false;</span>
+<span class="fc" id="L140">        return false;</span>
     }
 
     @Override
     public List&lt;Tip&gt; asList() {
-<span class="fc" id="L146">        ArrayList&lt;Tip&gt; list = new ArrayList();</span>
-<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (Object object : heap) {</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">            if (object != null) {</span>
-<span class="fc" id="L149">                list.add((Tip) object);</span>
-            }
-            
+<span class="fc" id="L145">        ArrayList&lt;Tip&gt; list = new ArrayList();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (int i = 0; i &lt; end; i++) {</span>
+<span class="fc" id="L147">            list.add((Tip) heap[i]);</span>
+
         }
-<span class="fc" id="L153">        return list;</span>
+<span class="fc" id="L150">        return list;</span>
     }
 
 }

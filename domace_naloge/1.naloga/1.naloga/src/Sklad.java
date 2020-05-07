@@ -2,7 +2,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 class Element<Tip> {
 
     public Tip vrednost;
@@ -137,5 +136,5 @@ public class Sklad<Tip> implements Seznam<Tip> {
         }
         return list;
     }
-    
+
 }

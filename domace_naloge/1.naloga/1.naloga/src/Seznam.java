@@ -1,7 +1,6 @@
 
 import java.util.List;
 
-
 public interface Seznam<Tip> {
 
     // dodajanje elementa v podatkovno strukturo
@@ -27,7 +26,7 @@ public interface Seznam<Tip> {
 
     // ali element obstaja v strukturi
     boolean exists(Tip e);
-    
+
     //vrne seznam z elementi podatkovne strukture
     List<Tip> asList();
 }

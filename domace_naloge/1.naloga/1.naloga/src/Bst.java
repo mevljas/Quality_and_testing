@@ -3,10 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class Bst<Tip extends Comparable> implements Seznam<Tip> {
-
-    
 
     class ElementBST {
 
@@ -171,33 +168,33 @@ public class Bst<Tip extends Comparable> implements Seznam<Tip> {
     public boolean exists(Tip e) {
         return member(e);
     }
-    
+
     @Override
     public List<Tip> asList() {
-        return  inorderTraversal(rootNode);
+        return inorderTraversal(rootNode);
     }
-    
+
     List<Tip> inorderTraversal(ElementBST root) {
-    ArrayList<Tip> result = new ArrayList<>();    
-    LinkedList<ElementBST> list = new LinkedList<>();
- 
-    ElementBST p = root;
-    while(p!=null){
-        list.add(p);
-        p=p.left;
-    }
- 
-    while(!list.isEmpty()){            
-        ElementBST t = list.removeLast();
-        result.add( t.value);
- 
-        t = t.right;
-        while(t!=null){
-            list.add(t);
-            t = t.left;
+        ArrayList<Tip> result = new ArrayList<>();
+        LinkedList<ElementBST> list = new LinkedList<>();
+
+        ElementBST p = root;
+        while (p != null) {
+            list.add(p);
+            p = p.left;
         }
+
+        while (!list.isEmpty()) {
+            ElementBST t = list.removeLast();
+            result.add(t.value);
+
+            t = t.right;
+            while (t != null) {
+                list.add(t);
+                t = t.left;
+            }
+        }
+
+        return result;
     }
- 
-    return result;
-}
 }

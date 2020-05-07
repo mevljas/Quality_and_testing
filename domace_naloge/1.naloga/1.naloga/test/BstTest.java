@@ -306,10 +306,8 @@ public class BstTest {
     public void testRemoveEmpty() {
         bst.remove("test");
     }
-    
-    // testiranje metode asList
-   
 
+    // testiranje metode asList
     @Test
     public void testAsListOne() {
         bst.add("Test1");
@@ -339,10 +337,10 @@ public class BstTest {
         assertEquals("Test8", l.get(7));
         assertEquals(8, bst.asList().size());
     }
-    
-     @Test
+
+    @Test
     public void testasListOnEmpty() {
-        assertTrue( bst.asList().isEmpty());
+        assertTrue(bst.asList().isEmpty());
     }
 
 }

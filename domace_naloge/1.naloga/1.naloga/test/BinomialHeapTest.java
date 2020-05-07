@@ -17,30 +17,30 @@ import static org.junit.Assert.*;
  * @author Seba
  */
 public class BinomialHeapTest {
-    
+
     private BinomialHeap<String> bk;
-    
+
     public BinomialHeapTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         bk = new BinomialHeap();
     }
-    
+
     @After
     public void tearDown() {
     }
-    
-     @Test
+
+    @Test
     public void testAddOne() {
         bk.add("Test");
     }
@@ -51,11 +51,92 @@ public class BinomialHeapTest {
         bk.add("Test2");
     }
 
-//    @Test(expected = java.lang.IllegalArgumentException.class)
-//    public void testAddExists() {
-//        bk.add("Test");
-//        bk.add("Test");
-//    }
+    @Test
+    public void testAddAdditional() {
+        bk.add("Test1");
+        bk.add("Test5");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test2");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test4");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test3");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test6");
+        assertEquals("Test6", bk.getFirst());
+        bk.add("Test9");
+        assertEquals("Test9", bk.getFirst());
+        bk.add("Test7");
+        assertEquals("Test9", bk.getFirst());
+    }
+
+    @Test
+    public void testAddAdditional2() {
+        bk.add("Test1");
+        bk.add("Test6");
+        assertEquals("Test6", bk.getFirst());
+        bk.add("Test8");
+        assertEquals("Test8", bk.getFirst());
+        bk.add("Test3");
+        assertEquals("Test8", bk.getFirst());
+        bk.add("Test5");
+        assertEquals("Test8", bk.getFirst());
+        bk.add("Test9");
+        assertEquals("Test9", bk.getFirst());
+        bk.add("Test2");
+        assertEquals("Test9", bk.getFirst());
+        bk.add("Test4");
+        assertEquals("Test9", bk.getFirst());
+    }
+
+    @Test
+    public void testAddAdditional3() {
+        bk.add("Test1");
+        bk.add("Test3");
+        assertEquals("Test3", bk.getFirst());
+        bk.add("Test2");
+        assertEquals("Test3", bk.getFirst());
+        bk.add("Test5");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test4");
+        assertEquals("Test5", bk.getFirst());
+        bk.add("Test9");
+        assertEquals("Test9", bk.getFirst());
+        bk.add("Test8");
+        assertEquals("Test9", bk.getFirst());
+        bk.add("Test7");
+        assertEquals("Test9", bk.getFirst());
+    }
+
+    @Test()
+    public void testRemoveMultiple2() {
+        bk.add("Test1");
+        bk.add("Test9");
+        bk.add("Test2");
+        bk.add("Test8");
+        bk.add("Test3");
+        bk.add("Test6");
+        bk.add("Test5");
+        bk.add("Test4");
+        assertEquals("Test6", bk.remove("Test6"));
+        assertEquals("Test1", bk.remove("Test1"));
+        assertEquals("Test9", bk.remove("Test9"));
+    }
+
+    @Test()
+    public void testRemoveMultiple3() {
+        bk.add("Test3");
+        bk.add("Test6");
+        bk.add("Test5");
+        bk.add("Test4");
+        bk.add("Test1");
+        bk.add("Test9");
+        bk.add("Test2");
+        bk.add("Test8");
+        assertEquals("Test6", bk.remove("Test6"));
+        assertEquals("Test1", bk.remove("Test1"));
+        assertEquals("Test9", bk.remove("Test9"));
+    }
 
     // testi brisanja
     @Test(expected = java.util.NoSuchElementException.class)
@@ -67,6 +148,21 @@ public class BinomialHeapTest {
     public void testRemoveFirstOne() {
         bk.add("Test");
         assertEquals("Test", bk.removeFirst());
+    }
+
+    @Test
+    public void testRemoveFirstAdditional() {
+        bk.add("Test1");
+        bk.add("Test2");
+        bk.add("Test3");
+        bk.add("Test4");
+        bk.add("Test9");
+        bk.add("Test7");
+        bk.add("Test8");
+        bk.add("Test5");
+        assertEquals("Test9", bk.removeFirst());
+        assertEquals("Test8", bk.removeFirst());
+        assertEquals("Test7", bk.removeFirst());
     }
 
     @Test
@@ -313,10 +409,8 @@ public class BinomialHeapTest {
     public void testRemoveEmpty() {
         bk.remove("test");
     }
-    
-    // testiranje metode asList
-   
 
+    // testiranje metode asList
     @Test
     public void testAsListOne() {
         bk.add("Test1");
@@ -346,12 +440,10 @@ public class BinomialHeapTest {
         assertEquals("Test2", l.get(7));
         assertEquals(8, bk.asList().size());
     }
-    
-     @Test
+
+    @Test
     public void testasListOnEmpty() {
-        assertTrue( bk.asList().isEmpty());
+        assertTrue(bk.asList().isEmpty());
     }
 
-
-    
 }

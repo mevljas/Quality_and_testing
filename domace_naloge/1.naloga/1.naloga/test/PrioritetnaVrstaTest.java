@@ -246,10 +246,8 @@ public class PrioritetnaVrstaTest {
     public void testRemoveEmpty() {
         pv.remove("test");
     }
-    
-        // testiranje metode asList
-   
 
+    // testiranje metode asList
     @Test
     public void testAsListOne() {
         pv.add("Test1");
@@ -279,10 +277,10 @@ public class PrioritetnaVrstaTest {
         assertEquals("Test1", l.get(7));
         assertEquals(8, pv.asList().size());
     }
-    
+
     @Test
     public void testasListOnEmpty() {
-        assertTrue( pv.asList().isEmpty());
+        assertTrue(pv.asList().isEmpty());
     }
 
 }
