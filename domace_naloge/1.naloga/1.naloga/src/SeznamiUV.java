@@ -2,7 +2,6 @@
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class SeznamiUV {
 
@@ -100,13 +99,6 @@ public class SeznamiUV {
                     result = "Error: please specify a string";
                 }
             } else if (token.equals("reset")) {
-//                if (seznam instanceof Sklad) {
-//                    seznam = new Sklad<>();
-//                } else if (seznam instanceof Bst) {
-//                    seznam = new Bst<>();
-//                } else {
-//                    seznam = new PrioritetnaVrsta<>();
-//                }
                 while (!seznam.isEmpty()) {
                     seznam.removeFirst();
 
@@ -123,8 +115,6 @@ public class SeznamiUV {
                 result = "Error: invalid command";
             }
 
-//        } catch (UnsupportedOperationException e) {
-//            result = "Error: Operation not supported";
         } catch (java.lang.IllegalArgumentException e) {
             result = "Error: Duplicated entry";
         } catch (java.util.NoSuchElementException e) {

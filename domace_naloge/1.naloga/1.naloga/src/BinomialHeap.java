@@ -4,49 +4,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+// Source: https://www.growingwiththeweb.com/data-structures/binomial-heap/overview/
 public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
 
-    private static <Tip extends Comparable<Tip>> BinomskaKopica<Tip> merge(
-            BinomialHeap<Tip> heap1, BinomialHeap<Tip> heap2) {
-        if (heap1.topNode == null) {
-            return heap2.topNode;
-        } else if (heap2.topNode == null) {
-            return heap1.topNode;
-        } else {
-            BinomskaKopica<Tip> head;
-            BinomskaKopica<Tip> heap1Next = heap1.topNode;
-            BinomskaKopica<Tip> heap2Next = heap2.topNode;
+    public static class BinomskaKopica<Tip extends Comparable> {
 
-            if (heap1.topNode.degree <= heap2.topNode.degree) {
-                head = heap1.topNode;
-                heap1Next = heap1Next.sibling;
-            } else {
-                head = heap2.topNode;
-                heap2Next = heap2Next.sibling;
-            }
+        public Tip key;
+        public int degree;
+        public BinomskaKopica<Tip> parent;
+        public BinomskaKopica<Tip> child;
+        public BinomskaKopica<Tip> sibling;
 
-            BinomskaKopica<Tip> tail = head;
-
-            while (heap1Next != null && heap2Next != null) {
-                if (heap1Next.degree <= heap2Next.degree) {
-                    tail.sibling = heap1Next;
-                    heap1Next = heap1Next.sibling;
-                } else {
-                    tail.sibling = heap2Next;
-                    heap2Next = heap2Next.sibling;
-                }
-
-                tail = tail.sibling;
-            }
-
-            if (heap1Next != null) {
-                tail.sibling = heap1Next;
-            } else {
-                tail.sibling = heap2Next;
-            }
-
-            return head;
+        public BinomskaKopica(Tip key) {
+            this.key = key;
         }
+
+        public int compareTo(BinomskaKopica<Tip> other) {
+            return this.key.compareTo(other.key);
+        }
+
     }
 
     private BinomskaKopica<Tip> topNode;
@@ -178,6 +154,49 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         }
 
         return newHead;
+    }
+
+    private static <Tip extends Comparable<Tip>> BinomskaKopica<Tip> merge(
+            BinomialHeap<Tip> heap1, BinomialHeap<Tip> heap2) {
+        if (heap1.topNode == null) {
+            return heap2.topNode;
+        } else if (heap2.topNode == null) {
+            return heap1.topNode;
+        } else {
+            BinomskaKopica<Tip> head;
+            BinomskaKopica<Tip> heap1Next = heap1.topNode;
+            BinomskaKopica<Tip> heap2Next = heap2.topNode;
+
+            if (heap1.topNode.degree <= heap2.topNode.degree) {
+                head = heap1.topNode;
+                heap1Next = heap1Next.sibling;
+            } else {
+                head = heap2.topNode;
+                heap2Next = heap2Next.sibling;
+            }
+
+            BinomskaKopica<Tip> tail = head;
+
+            while (heap1Next != null && heap2Next != null) {
+                if (heap1Next.degree <= heap2Next.degree) {
+                    tail.sibling = heap1Next;
+                    heap1Next = heap1Next.sibling;
+                } else {
+                    tail.sibling = heap2Next;
+                    heap2Next = heap2Next.sibling;
+                }
+
+                tail = tail.sibling;
+            }
+
+            if (heap1Next != null) {
+                tail.sibling = heap1Next;
+            } else {
+                tail.sibling = heap2Next;
+            }
+
+            return head;
+        }
     }
 
     @Override
@@ -312,21 +331,4 @@ public class BinomialHeap<Tip extends Comparable> implements Seznam<Tip> {
         return new ArrayList<>(hashMap.values());
     }
 
-    public static class BinomskaKopica<Tip extends Comparable> {
-
-        public Tip key;
-        public int degree;
-        public BinomskaKopica<Tip> parent;
-        public BinomskaKopica<Tip> child;
-        public BinomskaKopica<Tip> sibling;
-
-        public BinomskaKopica(Tip key) {
-            this.key = key;
-        }
-
-        public int compareTo(BinomskaKopica<Tip> other) {
-            return this.key.compareTo(other.key);
-        }
-
-    }
 }

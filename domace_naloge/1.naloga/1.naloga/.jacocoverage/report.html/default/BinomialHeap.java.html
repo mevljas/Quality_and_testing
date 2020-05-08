@@ -4,313 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+// Source: https://www.growingwiththeweb.com/data-structures/binomial-heap/overview/
 public class BinomialHeap&lt;Tip extends Comparable&gt; implements Seznam&lt;Tip&gt; {
-
-    private static &lt;Tip extends Comparable&lt;Tip&gt;&gt; BinomskaKopica&lt;Tip&gt; merge(
-            BinomialHeap&lt;Tip&gt; heap1, BinomialHeap&lt;Tip&gt; heap2) {
-<span class="fc bfc" id="L11" title="All 2 branches covered.">        if (heap1.topNode == null) {</span>
-<span class="fc" id="L12">            return heap2.topNode;</span>
-<span class="fc bfc" id="L13" title="All 2 branches covered.">        } else if (heap2.topNode == null) {</span>
-<span class="fc" id="L14">            return heap1.topNode;</span>
-        } else {
-            BinomskaKopica&lt;Tip&gt; head;
-<span class="fc" id="L17">            BinomskaKopica&lt;Tip&gt; heap1Next = heap1.topNode;</span>
-<span class="fc" id="L18">            BinomskaKopica&lt;Tip&gt; heap2Next = heap2.topNode;</span>
-
-<span class="fc bfc" id="L20" title="All 2 branches covered.">            if (heap1.topNode.degree &lt;= heap2.topNode.degree) {</span>
-<span class="fc" id="L21">                head = heap1.topNode;</span>
-<span class="fc" id="L22">                heap1Next = heap1Next.sibling;</span>
-            } else {
-<span class="fc" id="L24">                head = heap2.topNode;</span>
-<span class="fc" id="L25">                heap2Next = heap2Next.sibling;</span>
-            }
-
-<span class="fc" id="L28">            BinomskaKopica&lt;Tip&gt; tail = head;</span>
-
-<span class="fc bfc" id="L30" title="All 4 branches covered.">            while (heap1Next != null &amp;&amp; heap2Next != null) {</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">                if (heap1Next.degree &lt;= heap2Next.degree) {</span>
-<span class="fc" id="L32">                    tail.sibling = heap1Next;</span>
-<span class="fc" id="L33">                    heap1Next = heap1Next.sibling;</span>
-                } else {
-<span class="fc" id="L35">                    tail.sibling = heap2Next;</span>
-<span class="fc" id="L36">                    heap2Next = heap2Next.sibling;</span>
-                }
-
-<span class="fc" id="L39">                tail = tail.sibling;</span>
-            }
-
-<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (heap1Next != null) {</span>
-<span class="fc" id="L43">                tail.sibling = heap1Next;</span>
-            } else {
-<span class="fc" id="L45">                tail.sibling = heap2Next;</span>
-            }
-
-<span class="fc" id="L48">            return head;</span>
-        }
-    }
-
-    private BinomskaKopica&lt;Tip&gt; topNode;
-
-<span class="fc" id="L54">    public BinomialHeap() {</span>
-<span class="fc" id="L55">        topNode = null;</span>
-<span class="fc" id="L56">    }</span>
-
-<span class="fc" id="L58">    public BinomialHeap(BinomskaKopica&lt;Tip&gt; topNode) {</span>
-<span class="fc" id="L59">        this.topNode = topNode;</span>
-<span class="fc" id="L60">    }</span>
-
-    private Tip getMax() {
-<span class="fc" id="L63">        BinomskaKopica&lt;Tip&gt; max = topNode;</span>
-<span class="fc" id="L64">        BinomskaKopica&lt;Tip&gt; next = max.sibling;</span>
-
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        while (next != null) {</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (next.compareTo(max) &gt; 0) {</span>
-<span class="fc" id="L68">                max = next;</span>
-            }
-<span class="fc" id="L70">            next = next.sibling;</span>
-        }
-
-<span class="fc" id="L73">        return max.key;</span>
-    }
-
-    public BinomskaKopica&lt;Tip&gt; search(Tip key) {
-<span class="fc" id="L77">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; nodes = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L79">            throw new NoSuchElementException();</span>
-        }
-<span class="fc" id="L81">        nodes.add(topNode);</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        while (!nodes.isEmpty()) {</span>
-<span class="fc" id="L83">            BinomskaKopica&lt;Tip&gt; curr = nodes.get(0);</span>
-<span class="fc" id="L84">            nodes.remove(0);</span>
-<span class="fc bfc" id="L85" title="All 2 branches covered.">            if (curr.key.compareTo(key) == 0) {</span>
-<span class="fc" id="L86">                return curr;</span>
-            }
-<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
-<span class="fc" id="L89">                nodes.add(curr.sibling);</span>
-            }
-<span class="fc bfc" id="L91" title="All 4 branches covered.">            if (curr.key.compareTo(key) &gt;= 0 &amp;&amp; curr.child != null) {</span>
-<span class="fc" id="L92">                nodes.add(curr.child);</span>
-            }
-<span class="fc" id="L94">        }</span>
-<span class="fc" id="L95">        return null;</span>
-    }
-
-    private BinomskaKopica&lt;Tip&gt; bubbleUp(BinomskaKopica&lt;Tip&gt; node) {
-<span class="fc" id="L99">        BinomskaKopica&lt;Tip&gt; parent = node.parent;</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        while (parent != null) {</span>
-<span class="fc" id="L101">            Tip temp = node.key;</span>
-<span class="fc" id="L102">            node.key = parent.key;</span>
-<span class="fc" id="L103">            parent.key = temp;</span>
-<span class="fc" id="L104">            node = parent;</span>
-<span class="fc" id="L105">            parent = parent.parent;</span>
-<span class="fc" id="L106">        }</span>
-<span class="fc" id="L107">        return node;</span>
-    }
-
-    private void removeTreeRoot(BinomskaKopica&lt;Tip&gt; root, BinomskaKopica&lt;Tip&gt; prev) {
-        // Remove root from the heap
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (root == topNode) {</span>
-<span class="fc" id="L113">            topNode = root.sibling;</span>
-        } else {
-<span class="fc" id="L115">            prev.sibling = root.sibling;</span>
-        }
-
-        // Reverse the order of root's children and make a new heap
-<span class="fc" id="L119">        BinomskaKopica&lt;Tip&gt; newHead = null;</span>
-<span class="fc" id="L120">        BinomskaKopica&lt;Tip&gt; child = root.child;</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">        while (child != null) {</span>
-<span class="fc" id="L122">            BinomskaKopica&lt;Tip&gt; next = child.sibling;</span>
-<span class="fc" id="L123">            child.sibling = newHead;</span>
-<span class="fc" id="L124">            child.parent = null;</span>
-<span class="fc" id="L125">            newHead = child;</span>
-<span class="fc" id="L126">            child = next;</span>
-<span class="fc" id="L127">        }</span>
-<span class="fc" id="L128">        BinomialHeap&lt;Tip&gt; newHeap = new BinomialHeap&lt;&gt;(newHead);</span>
-
-        // Union the heaps and set its head as this.head
-<span class="fc" id="L131">        topNode = union(newHeap);</span>
-<span class="fc" id="L132">    }</span>
-
-    // Merge two binomial trees of the same order
-    private void linkTree(BinomskaKopica&lt;Tip&gt; minNodeTree, BinomskaKopica&lt;Tip&gt; other) {
-<span class="fc" id="L136">        other.parent = minNodeTree;</span>
-<span class="fc" id="L137">        other.sibling = minNodeTree.child;</span>
-<span class="fc" id="L138">        minNodeTree.child = other;</span>
-<span class="fc" id="L139">        minNodeTree.degree++;</span>
-<span class="fc" id="L140">    }</span>
-
-    // Union two binomial heaps into one and return the head
-    public BinomskaKopica&lt;Tip&gt; union(BinomialHeap&lt;Tip&gt; heap) {
-<span class="fc" id="L144">        BinomskaKopica&lt;Tip&gt; newHead = merge(this, heap);</span>
-
-<span class="fc" id="L146">        topNode = null;</span>
-<span class="fc" id="L147">        heap.topNode = null;</span>
-
-<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (newHead == null) {</span>
-<span class="fc" id="L150">            return null;</span>
-        }
-
-<span class="fc" id="L153">        BinomskaKopica&lt;Tip&gt; prev = null;</span>
-<span class="fc" id="L154">        BinomskaKopica&lt;Tip&gt; curr = newHead;</span>
-<span class="fc" id="L155">        BinomskaKopica&lt;Tip&gt; next = newHead.sibling;</span>
-
-<span class="fc bfc" id="L157" title="All 2 branches covered.">        while (next != null) {</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (curr.degree != next.degree) {</span>
-<span class="fc" id="L159">                prev = curr;</span>
-<span class="fc" id="L160">                curr = next;</span>
-            } else {
-<span class="fc bfc" id="L162" title="All 2 branches covered.">                if (curr.compareTo(next) &gt; 0) {</span>
-<span class="fc" id="L163">                    curr.sibling = next.sibling;</span>
-<span class="fc" id="L164">                    linkTree(curr, next);</span>
-                } else {
-<span class="fc bfc" id="L166" title="All 2 branches covered.">                    if (prev == null) {</span>
-<span class="fc" id="L167">                        newHead = next;</span>
-                    } else {
-<span class="fc" id="L169">                        prev.sibling = next;</span>
-                    }
-
-<span class="fc" id="L172">                    linkTree(next, curr);</span>
-<span class="fc" id="L173">                    curr = next;</span>
-                }
-            }
-
-<span class="fc" id="L177">            next = curr.sibling;</span>
-        }
-
-<span class="fc" id="L180">        return newHead;</span>
-    }
-
-    @Override
-    public void add(Tip e) {
-<span class="fc" id="L185">        BinomskaKopica&lt;Tip&gt; node = new BinomskaKopica&lt;&gt;(e);</span>
-<span class="fc" id="L186">        BinomialHeap&lt;Tip&gt; tempHeap = new BinomialHeap&lt;&gt;(node);</span>
-<span class="fc" id="L187">        topNode = union(tempHeap);</span>
-<span class="fc" id="L188">    }</span>
-
-    @Override
-    public Tip removeFirst() {
-<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L193">            throw new NoSuchElementException();</span>
-        }
-
-<span class="fc" id="L196">        BinomskaKopica&lt;Tip&gt; max = topNode;</span>
-<span class="fc" id="L197">        BinomskaKopica&lt;Tip&gt; maxPrev = null;</span>
-<span class="fc" id="L198">        BinomskaKopica&lt;Tip&gt; next = max.sibling;</span>
-<span class="fc" id="L199">        BinomskaKopica&lt;Tip&gt; nextPrev = max;</span>
-
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        while (next != null) {</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">            if (next.compareTo(max) &gt; 0) {</span>
-<span class="fc" id="L203">                max = next;</span>
-<span class="fc" id="L204">                maxPrev = nextPrev;</span>
-            }
-<span class="fc" id="L206">            nextPrev = next;</span>
-<span class="fc" id="L207">            next = next.sibling;</span>
-        }
-
-<span class="fc" id="L210">        removeTreeRoot(max, maxPrev);</span>
-<span class="fc" id="L211">        return max.key;</span>
-    }
-
-    @Override
-    public Tip getFirst() {
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L217">            throw new NoSuchElementException();</span>
-        }
-<span class="fc" id="L219">        return getMax();</span>
-    }
-
-    @Override
-    public int size() {
-<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L225">            return 0;</span>
-        } else {
-<span class="fc" id="L227">            BinomskaKopica&lt;Tip&gt; node = topNode;</span>
-<span class="fc" id="L228">            int count = 0;</span>
-            do {
-<span class="fc" id="L230">                count += Math.pow(2, node.degree);</span>
-<span class="fc" id="L231">                node = node.sibling;</span>
-
-<span class="fc bfc" id="L233" title="All 2 branches covered.">            } while (node != null);</span>
-
-<span class="fc" id="L235">            return count;</span>
-        }
-    }
-
-    @Override
-    public int depth() {
-<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L242">            return 0;</span>
-        } else {
-<span class="fc" id="L244">            BinomskaKopica&lt;Tip&gt; max = topNode;</span>
-
-<span class="fc bfc" id="L246" title="All 2 branches covered.">            while (max.sibling != null) {</span>
-<span class="fc" id="L247">                max = max.sibling;</span>
-            }
-
-<span class="fc" id="L250">            return max.degree;</span>
-        }
-    }
-
-    @Override
-    public Tip remove(Tip e) {
-<span class="fc" id="L256">        BinomskaKopica node = search(e);</span>
-<span class="fc bfc" id="L257" title="All 2 branches covered.">        if (node != null) {</span>
-<span class="fc" id="L258">            node = bubbleUp(node);</span>
-<span class="fc bfc" id="L259" title="All 2 branches covered.">            if (topNode == node) {</span>
-<span class="fc" id="L260">                removeTreeRoot(node, null);</span>
-            } else {
-<span class="fc" id="L262">                BinomskaKopica&lt;Tip&gt; prev = topNode;</span>
-<span class="fc" id="L263">                removeTreeRoot(node, prev);</span>
-            }
-<span class="fc" id="L265">            return e;</span>
-        } else {
-<span class="fc" id="L267">            throw new NoSuchElementException();</span>
-        }
-    }
-
-    @Override
-    public boolean exists(Tip e) {
-<span class="fc bfc" id="L273" title="All 4 branches covered.">        return topNode != null &amp;&amp; search(e) != null;</span>
-    }
-
-    @Override
-    public boolean isEmpty() {
-<span class="fc bfc" id="L278" title="All 2 branches covered.">        return topNode == null;</span>
-    }
-
-    @Override
-    public List&lt;Tip&gt; asList() {
-<span class="fc" id="L283">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; currentRow = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L284">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; nextRow = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L285">        LinkedHashMap hashMap = new LinkedHashMap();</span>
-<span class="fc bfc" id="L286" title="All 2 branches covered.">        if (topNode == null) {</span>
-<span class="fc" id="L287">            return new ArrayList&lt;&gt;(hashMap.values());</span>
-        }
-<span class="fc" id="L289">        currentRow.add(topNode);</span>
-<span class="fc bfc" id="L290" title="All 2 branches covered.">        while (!currentRow.isEmpty()) {</span>
-<span class="fc" id="L291">            BinomskaKopica&lt;Tip&gt; curr = currentRow.get(0);</span>
-<span class="fc" id="L292">            hashMap.put(curr.key, curr.key);</span>
-<span class="fc" id="L293">            currentRow.remove(0);</span>
-
-<span class="fc bfc" id="L295" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
-<span class="fc" id="L296">                currentRow.add(curr.sibling);</span>
-            }
-<span class="fc bfc" id="L298" title="All 2 branches covered.">            if (curr.child != null) {</span>
-<span class="fc" id="L299">                BinomskaKopica&lt;Tip&gt; child = curr.child;</span>
-<span class="fc" id="L300">                nextRow.add(child);</span>
-<span class="fc bfc" id="L301" title="All 2 branches covered.">                while (child.sibling != null) {</span>
-<span class="fc" id="L302">                    nextRow.add(child.sibling);</span>
-<span class="fc" id="L303">                    child = child.sibling;</span>
-
-                }
-            }
-<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (currentRow.isEmpty()) {</span>
-<span class="fc" id="L308">                currentRow.addAll(nextRow);</span>
-<span class="fc" id="L309">                nextRow.clear();</span>
-            }
-<span class="fc" id="L311">        }</span>
-<span class="fc" id="L312">        return new ArrayList&lt;&gt;(hashMap.values());</span>
-    }
 
     public static class BinomskaKopica&lt;Tip extends Comparable&gt; {
 
@@ -320,14 +15,321 @@ public class BinomialHeap&lt;Tip extends Comparable&gt; implements Seznam&lt;Tip
         public BinomskaKopica&lt;Tip&gt; child;
         public BinomskaKopica&lt;Tip&gt; sibling;
 
-<span class="fc" id="L323">        public BinomskaKopica(Tip key) {</span>
-<span class="fc" id="L324">            this.key = key;</span>
-<span class="fc" id="L325">        }</span>
+<span class="fc" id="L18">        public BinomskaKopica(Tip key) {</span>
+<span class="fc" id="L19">            this.key = key;</span>
+<span class="fc" id="L20">        }</span>
 
         public int compareTo(BinomskaKopica&lt;Tip&gt; other) {
-<span class="fc" id="L328">            return this.key.compareTo(other.key);</span>
+<span class="fc" id="L23">            return this.key.compareTo(other.key);</span>
         }
 
     }
+
+    private BinomskaKopica&lt;Tip&gt; topNode;
+
+<span class="fc" id="L30">    public BinomialHeap() {</span>
+<span class="fc" id="L31">        topNode = null;</span>
+<span class="fc" id="L32">    }</span>
+
+<span class="fc" id="L34">    public BinomialHeap(BinomskaKopica&lt;Tip&gt; topNode) {</span>
+<span class="fc" id="L35">        this.topNode = topNode;</span>
+<span class="fc" id="L36">    }</span>
+
+    private Tip getMax() {
+<span class="fc" id="L39">        BinomskaKopica&lt;Tip&gt; max = topNode;</span>
+<span class="fc" id="L40">        BinomskaKopica&lt;Tip&gt; next = max.sibling;</span>
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        while (next != null) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (next.compareTo(max) &gt; 0) {</span>
+<span class="fc" id="L44">                max = next;</span>
+            }
+<span class="fc" id="L46">            next = next.sibling;</span>
+        }
+
+<span class="fc" id="L49">        return max.key;</span>
+    }
+
+    public BinomskaKopica&lt;Tip&gt; search(Tip key) {
+<span class="fc" id="L53">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; nodes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L55">            throw new NoSuchElementException();</span>
+        }
+<span class="fc" id="L57">        nodes.add(topNode);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        while (!nodes.isEmpty()) {</span>
+<span class="fc" id="L59">            BinomskaKopica&lt;Tip&gt; curr = nodes.get(0);</span>
+<span class="fc" id="L60">            nodes.remove(0);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (curr.key.compareTo(key) == 0) {</span>
+<span class="fc" id="L62">                return curr;</span>
+            }
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
+<span class="fc" id="L65">                nodes.add(curr.sibling);</span>
+            }
+<span class="fc bfc" id="L67" title="All 4 branches covered.">            if (curr.key.compareTo(key) &gt;= 0 &amp;&amp; curr.child != null) {</span>
+<span class="fc" id="L68">                nodes.add(curr.child);</span>
+            }
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">        return null;</span>
+    }
+
+    private BinomskaKopica&lt;Tip&gt; bubbleUp(BinomskaKopica&lt;Tip&gt; node) {
+<span class="fc" id="L75">        BinomskaKopica&lt;Tip&gt; parent = node.parent;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        while (parent != null) {</span>
+<span class="fc" id="L77">            Tip temp = node.key;</span>
+<span class="fc" id="L78">            node.key = parent.key;</span>
+<span class="fc" id="L79">            parent.key = temp;</span>
+<span class="fc" id="L80">            node = parent;</span>
+<span class="fc" id="L81">            parent = parent.parent;</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">        return node;</span>
+    }
+
+    private void removeTreeRoot(BinomskaKopica&lt;Tip&gt; root, BinomskaKopica&lt;Tip&gt; prev) {
+        // Remove root from the heap
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (root == topNode) {</span>
+<span class="fc" id="L89">            topNode = root.sibling;</span>
+        } else {
+<span class="fc" id="L91">            prev.sibling = root.sibling;</span>
+        }
+
+        // Reverse the order of root's children and make a new heap
+<span class="fc" id="L95">        BinomskaKopica&lt;Tip&gt; newHead = null;</span>
+<span class="fc" id="L96">        BinomskaKopica&lt;Tip&gt; child = root.child;</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        while (child != null) {</span>
+<span class="fc" id="L98">            BinomskaKopica&lt;Tip&gt; next = child.sibling;</span>
+<span class="fc" id="L99">            child.sibling = newHead;</span>
+<span class="fc" id="L100">            child.parent = null;</span>
+<span class="fc" id="L101">            newHead = child;</span>
+<span class="fc" id="L102">            child = next;</span>
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">        BinomialHeap&lt;Tip&gt; newHeap = new BinomialHeap&lt;&gt;(newHead);</span>
+
+        // Union the heaps and set its head as this.head
+<span class="fc" id="L107">        topNode = union(newHeap);</span>
+<span class="fc" id="L108">    }</span>
+
+    // Merge two binomial trees of the same order
+    private void linkTree(BinomskaKopica&lt;Tip&gt; minNodeTree, BinomskaKopica&lt;Tip&gt; other) {
+<span class="fc" id="L112">        other.parent = minNodeTree;</span>
+<span class="fc" id="L113">        other.sibling = minNodeTree.child;</span>
+<span class="fc" id="L114">        minNodeTree.child = other;</span>
+<span class="fc" id="L115">        minNodeTree.degree++;</span>
+<span class="fc" id="L116">    }</span>
+
+    // Union two binomial heaps into one and return the head
+    public BinomskaKopica&lt;Tip&gt; union(BinomialHeap&lt;Tip&gt; heap) {
+<span class="fc" id="L120">        BinomskaKopica&lt;Tip&gt; newHead = merge(this, heap);</span>
+
+<span class="fc" id="L122">        topNode = null;</span>
+<span class="fc" id="L123">        heap.topNode = null;</span>
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (newHead == null) {</span>
+<span class="fc" id="L126">            return null;</span>
+        }
+
+<span class="fc" id="L129">        BinomskaKopica&lt;Tip&gt; prev = null;</span>
+<span class="fc" id="L130">        BinomskaKopica&lt;Tip&gt; curr = newHead;</span>
+<span class="fc" id="L131">        BinomskaKopica&lt;Tip&gt; next = newHead.sibling;</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        while (next != null) {</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (curr.degree != next.degree) {</span>
+<span class="fc" id="L135">                prev = curr;</span>
+<span class="fc" id="L136">                curr = next;</span>
+            } else {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">                if (curr.compareTo(next) &gt; 0) {</span>
+<span class="fc" id="L139">                    curr.sibling = next.sibling;</span>
+<span class="fc" id="L140">                    linkTree(curr, next);</span>
+                } else {
+<span class="fc bfc" id="L142" title="All 2 branches covered.">                    if (prev == null) {</span>
+<span class="fc" id="L143">                        newHead = next;</span>
+                    } else {
+<span class="fc" id="L145">                        prev.sibling = next;</span>
+                    }
+
+<span class="fc" id="L148">                    linkTree(next, curr);</span>
+<span class="fc" id="L149">                    curr = next;</span>
+                }
+            }
+
+<span class="fc" id="L153">            next = curr.sibling;</span>
+        }
+
+<span class="fc" id="L156">        return newHead;</span>
+    }
+
+    private static &lt;Tip extends Comparable&lt;Tip&gt;&gt; BinomskaKopica&lt;Tip&gt; merge(
+            BinomialHeap&lt;Tip&gt; heap1, BinomialHeap&lt;Tip&gt; heap2) {
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (heap1.topNode == null) {</span>
+<span class="fc" id="L162">            return heap2.topNode;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        } else if (heap2.topNode == null) {</span>
+<span class="fc" id="L164">            return heap1.topNode;</span>
+        } else {
+            BinomskaKopica&lt;Tip&gt; head;
+<span class="fc" id="L167">            BinomskaKopica&lt;Tip&gt; heap1Next = heap1.topNode;</span>
+<span class="fc" id="L168">            BinomskaKopica&lt;Tip&gt; heap2Next = heap2.topNode;</span>
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            if (heap1.topNode.degree &lt;= heap2.topNode.degree) {</span>
+<span class="fc" id="L171">                head = heap1.topNode;</span>
+<span class="fc" id="L172">                heap1Next = heap1Next.sibling;</span>
+            } else {
+<span class="fc" id="L174">                head = heap2.topNode;</span>
+<span class="fc" id="L175">                heap2Next = heap2Next.sibling;</span>
+            }
+
+<span class="fc" id="L178">            BinomskaKopica&lt;Tip&gt; tail = head;</span>
+
+<span class="fc bfc" id="L180" title="All 4 branches covered.">            while (heap1Next != null &amp;&amp; heap2Next != null) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                if (heap1Next.degree &lt;= heap2Next.degree) {</span>
+<span class="fc" id="L182">                    tail.sibling = heap1Next;</span>
+<span class="fc" id="L183">                    heap1Next = heap1Next.sibling;</span>
+                } else {
+<span class="fc" id="L185">                    tail.sibling = heap2Next;</span>
+<span class="fc" id="L186">                    heap2Next = heap2Next.sibling;</span>
+                }
+
+<span class="fc" id="L189">                tail = tail.sibling;</span>
+            }
+
+<span class="fc bfc" id="L192" title="All 2 branches covered.">            if (heap1Next != null) {</span>
+<span class="fc" id="L193">                tail.sibling = heap1Next;</span>
+            } else {
+<span class="fc" id="L195">                tail.sibling = heap2Next;</span>
+            }
+
+<span class="fc" id="L198">            return head;</span>
+        }
+    }
+
+    @Override
+    public void add(Tip e) {
+<span class="fc" id="L204">        BinomskaKopica&lt;Tip&gt; node = new BinomskaKopica&lt;&gt;(e);</span>
+<span class="fc" id="L205">        BinomialHeap&lt;Tip&gt; tempHeap = new BinomialHeap&lt;&gt;(node);</span>
+<span class="fc" id="L206">        topNode = union(tempHeap);</span>
+<span class="fc" id="L207">    }</span>
+
+    @Override
+    public Tip removeFirst() {
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L212">            throw new NoSuchElementException();</span>
+        }
+
+<span class="fc" id="L215">        BinomskaKopica&lt;Tip&gt; max = topNode;</span>
+<span class="fc" id="L216">        BinomskaKopica&lt;Tip&gt; maxPrev = null;</span>
+<span class="fc" id="L217">        BinomskaKopica&lt;Tip&gt; next = max.sibling;</span>
+<span class="fc" id="L218">        BinomskaKopica&lt;Tip&gt; nextPrev = max;</span>
+
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        while (next != null) {</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">            if (next.compareTo(max) &gt; 0) {</span>
+<span class="fc" id="L222">                max = next;</span>
+<span class="fc" id="L223">                maxPrev = nextPrev;</span>
+            }
+<span class="fc" id="L225">            nextPrev = next;</span>
+<span class="fc" id="L226">            next = next.sibling;</span>
+        }
+
+<span class="fc" id="L229">        removeTreeRoot(max, maxPrev);</span>
+<span class="fc" id="L230">        return max.key;</span>
+    }
+
+    @Override
+    public Tip getFirst() {
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L236">            throw new NoSuchElementException();</span>
+        }
+<span class="fc" id="L238">        return getMax();</span>
+    }
+
+    @Override
+    public int size() {
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L244">            return 0;</span>
+        } else {
+<span class="fc" id="L246">            BinomskaKopica&lt;Tip&gt; node = topNode;</span>
+<span class="fc" id="L247">            int count = 0;</span>
+            do {
+<span class="fc" id="L249">                count += Math.pow(2, node.degree);</span>
+<span class="fc" id="L250">                node = node.sibling;</span>
+
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            } while (node != null);</span>
+
+<span class="fc" id="L254">            return count;</span>
+        }
+    }
+
+    @Override
+    public int depth() {
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L261">            return 0;</span>
+        } else {
+<span class="fc" id="L263">            BinomskaKopica&lt;Tip&gt; max = topNode;</span>
+
+<span class="fc bfc" id="L265" title="All 2 branches covered.">            while (max.sibling != null) {</span>
+<span class="fc" id="L266">                max = max.sibling;</span>
+            }
+
+<span class="fc" id="L269">            return max.degree;</span>
+        }
+    }
+
+    @Override
+    public Tip remove(Tip e) {
+<span class="fc" id="L275">        BinomskaKopica node = search(e);</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        if (node != null) {</span>
+<span class="fc" id="L277">            node = bubbleUp(node);</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if (topNode == node) {</span>
+<span class="fc" id="L279">                removeTreeRoot(node, null);</span>
+            } else {
+<span class="fc" id="L281">                BinomskaKopica&lt;Tip&gt; prev = topNode;</span>
+<span class="fc" id="L282">                removeTreeRoot(node, prev);</span>
+            }
+<span class="fc" id="L284">            return e;</span>
+        } else {
+<span class="fc" id="L286">            throw new NoSuchElementException();</span>
+        }
+    }
+
+    @Override
+    public boolean exists(Tip e) {
+<span class="fc bfc" id="L292" title="All 4 branches covered.">        return topNode != null &amp;&amp; search(e) != null;</span>
+    }
+
+    @Override
+    public boolean isEmpty() {
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        return topNode == null;</span>
+    }
+
+    @Override
+    public List&lt;Tip&gt; asList() {
+<span class="fc" id="L302">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; currentRow = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L303">        List&lt;BinomskaKopica&lt;Tip&gt;&gt; nextRow = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L304">        LinkedHashMap hashMap = new LinkedHashMap();</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (topNode == null) {</span>
+<span class="fc" id="L306">            return new ArrayList&lt;&gt;(hashMap.values());</span>
+        }
+<span class="fc" id="L308">        currentRow.add(topNode);</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        while (!currentRow.isEmpty()) {</span>
+<span class="fc" id="L310">            BinomskaKopica&lt;Tip&gt; curr = currentRow.get(0);</span>
+<span class="fc" id="L311">            hashMap.put(curr.key, curr.key);</span>
+<span class="fc" id="L312">            currentRow.remove(0);</span>
+
+<span class="fc bfc" id="L314" title="All 2 branches covered.">            if (curr.sibling != null) {</span>
+<span class="fc" id="L315">                currentRow.add(curr.sibling);</span>
+            }
+<span class="fc bfc" id="L317" title="All 2 branches covered.">            if (curr.child != null) {</span>
+<span class="fc" id="L318">                BinomskaKopica&lt;Tip&gt; child = curr.child;</span>
+<span class="fc" id="L319">                nextRow.add(child);</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">                while (child.sibling != null) {</span>
+<span class="fc" id="L321">                    nextRow.add(child.sibling);</span>
+<span class="fc" id="L322">                    child = child.sibling;</span>
+
+                }
+            }
+<span class="fc bfc" id="L326" title="All 2 branches covered.">            if (currentRow.isEmpty()) {</span>
+<span class="fc" id="L327">                currentRow.addAll(nextRow);</span>
+<span class="fc" id="L328">                nextRow.clear();</span>
+            }
+<span class="fc" id="L330">        }</span>
+<span class="fc" id="L331">        return new ArrayList&lt;&gt;(hashMap.values());</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

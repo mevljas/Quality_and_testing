@@ -256,6 +256,18 @@ public class SeznamiUVTest {
         assertEquals("0", uv.processInput("size"));
     }
 
+    public void testResetAdditional() {
+        uv.processInput("add Test1");
+        uv.processInput("add Test2");
+        uv.processInput("add Test3");
+        uv.processInput("add Test6");
+        uv.processInput("add Test5");
+        uv.processInput("add Test4");
+        assertEquals(6, uv.processInput("size"));
+        uv.processInput("reset");
+        assertEquals(0, uv.processInput("size"));
+    }
+
     public void testExistsOne() {
         String name = "Test1";
         uv.processInput("add " + name);
