@@ -175,26 +175,16 @@ public class Bst<Tip extends Comparable> implements Seznam<Tip> {
     }
 
     List<Tip> inorderTraversal(ElementBST root) {
-        ArrayList<Tip> result = new ArrayList<>();
-        LinkedList<ElementBST> list = new LinkedList<>();
-
-        ElementBST p = root;
-        while (p != null) {
-            list.add(p);
-            p = p.left;
+        if (root == null) {
+            return new ArrayList<>();
         }
 
-        while (!list.isEmpty()) {
-            ElementBST t = list.removeLast();
-            result.add(t.value);
+        List list = inorderTraversal(root.left);
 
-            t = t.right;
-            while (t != null) {
-                list.add(t);
-                t = t.left;
-            }
-        }
+        list.add(root.value);
 
-        return result;
+        list.addAll(inorderTraversal(root.right));
+
+        return list;
     }
 }

@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class BinomialHeapTest {
 
-    private BinomialHeap<String> bk;
+    private BinomskaKopica<String> bk;
 
     public BinomialHeapTest() {
     }
@@ -33,7 +33,7 @@ public class BinomialHeapTest {
 
     @Before
     public void setUp() {
-        bk = new BinomialHeap();
+        bk = new BinomskaKopica();
     }
 
     @After
@@ -432,13 +432,34 @@ public class BinomialHeapTest {
         List l = bk.asList();
         assertEquals("Test8", l.get(0));
         assertEquals("Test5", l.get(1));
-        assertEquals("Test6", l.get(2));
-        assertEquals("Test7", l.get(3));
-        assertEquals("Test4", l.get(4));
-        assertEquals("Test1", l.get(5));
+        assertEquals("Test4", l.get(2));
+        assertEquals("Test2", l.get(3));
+        assertEquals("Test1", l.get(4));
+        assertEquals("Test6", l.get(5));
         assertEquals("Test3", l.get(6));
-        assertEquals("Test2", l.get(7));
+        assertEquals("Test7", l.get(7));
         assertEquals(8, bk.asList().size());
+    }
+
+    @Test
+    public void testAsListMultiple2() {
+        bk.add("Test1");
+        bk.add("Test5");
+        bk.add("Test2");
+        bk.add("Test4");
+        bk.add("Test3");
+        bk.add("Test6");
+        bk.add("Test8");
+
+        List l = bk.asList();
+        assertEquals("Test8", l.get(0));
+        assertEquals("Test6", l.get(1));
+        assertEquals("Test3", l.get(2));
+        assertEquals("Test5", l.get(3));
+        assertEquals("Test4", l.get(4));
+        assertEquals("Test2", l.get(5));
+        assertEquals("Test1", l.get(6));
+        assertEquals(7, bk.asList().size());
     }
 
     @Test

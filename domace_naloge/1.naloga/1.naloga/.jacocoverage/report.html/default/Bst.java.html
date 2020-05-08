@@ -175,27 +175,17 @@ public class Bst&lt;Tip extends Comparable&gt; implements Seznam&lt;Tip&gt; {
     }
 
     List&lt;Tip&gt; inorderTraversal(ElementBST root) {
-<span class="fc" id="L178">        ArrayList&lt;Tip&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L179">        LinkedList&lt;ElementBST&gt; list = new LinkedList&lt;&gt;();</span>
-
-<span class="fc" id="L181">        ElementBST p = root;</span>
-<span class="fc bfc" id="L182" title="All 2 branches covered.">        while (p != null) {</span>
-<span class="fc" id="L183">            list.add(p);</span>
-<span class="fc" id="L184">            p = p.left;</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (root == null) {</span>
+<span class="fc" id="L179">            return new ArrayList&lt;&gt;();</span>
         }
 
-<span class="fc bfc" id="L187" title="All 2 branches covered.">        while (!list.isEmpty()) {</span>
-<span class="fc" id="L188">            ElementBST t = list.removeLast();</span>
-<span class="fc" id="L189">            result.add(t.value);</span>
+<span class="fc" id="L182">        List list = inorderTraversal(root.left);</span>
 
-<span class="fc" id="L191">            t = t.right;</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">            while (t != null) {</span>
-<span class="fc" id="L193">                list.add(t);</span>
-<span class="fc" id="L194">                t = t.left;</span>
-            }
-<span class="fc" id="L196">        }</span>
+<span class="fc" id="L184">        list.add(root.value);</span>
 
-<span class="fc" id="L198">        return result;</span>
+<span class="fc" id="L186">        list.addAll(inorderTraversal(root.right));</span>
+
+<span class="fc" id="L188">        return list;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

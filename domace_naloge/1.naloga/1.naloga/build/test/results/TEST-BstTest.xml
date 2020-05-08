@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="DESKTOP-5E1UGH8" name="BstTest" skipped="0" tests="31" time="0.08" timestamp="2020-05-08T11:02:49">
+<testsuite errors="0" failures="0" hostname="DESKTOP-5E1UGH8" name="BstTest" skipped="0" tests="31" time="0.101" timestamp="2020-05-08T12:29:23">
   <properties>
     <property name="netbeans.autoupdate.country" value="US" />
     <property name="javac.test.classpath" value=":build/classes:C:\Program Files\NetBeans 8.2\platform\modules\ext\junit-4.12.jar:C:\Program Files\NetBeans 8.2\platform\modules\ext\hamcrest-core-1.3.jar" />
@@ -36,7 +36,7 @@
     <property name="user.name" value="Seba" />
     <property name="copylibs.rebase" value="true" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner BstTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\test\results\TEST-BstTest.xml crashfile=D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\junitvmwatcher4520788711467811738.properties propsfile=D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\junit2871444968684298699.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner BstTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\test\results\TEST-BstTest.xml crashfile=D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\junitvmwatcher4561122895542997229.properties propsfile=D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build\junit9180331266929522465.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -283,7 +283,7 @@
     <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans 8.2\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
     <property name="libs.spring-framework300.classpath" value="C:\Program Files\NetBeans 8.2\ide\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-aop-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-aspects-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-beans-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-build-src-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-context-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-context-support-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-core-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-expression-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-framework-bom-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-instrument-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-instrument-tomcat-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-jdbc-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-jms-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-orm-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-oxm-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-struts-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-test-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-tx-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-web-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-webmvc-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-webmvc-portlet-3.2.7.RELEASE.jar" />
     <property name="libs.hamcrest.src" value="" />
-    <property name="run.jvmargs" value="  -javaagent:&quot;C:\Users\Seba\AppData\Roaming\NetBeans\8.2\modules\ext\jacocoagent.jar&quot;=includes=*,destfile=&quot;D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\jacoco.exec-48867157093100&quot;" />
+    <property name="run.jvmargs" value="  -javaagent:&quot;C:\Users\Seba\AppData\Roaming\NetBeans\8.2\modules\ext\jacocoagent.jar&quot;=includes=*,destfile=&quot;D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\jacoco.exec-54061671847700&quot;" />
     <property name="libs.hibernate4-persistence.classpath" value="C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\antlr-2.7.7.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\c3p0-0.9.2.1.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-c3p0-4.3.1.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\mchange-commons-java-0.2.3.4.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\dom4j-1.6.1.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\ehcache-core-2.4.3.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-ehcache-4.3.1.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-core-4.3.1.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\jboss-logging-3.1.3.GA.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-commons-annotations-4.0.4.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-entitymanager-4.3.1.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\javassist-3.18.1-GA.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\jboss-transaction-api_1.2_spec-1.0.0.Final.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\slf4j-api-1.6.1.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\slf4j-simple-1.6.1.jar;C:\Program Files\NetBeans 8.2\java\modules\ext\hibernate4\hibernate-jpa-2.1-api-1.0.0.Final.jar" />
     <property name="dist.archive.excludes" value="" />
     <property name="libs.JAXB-ENDORSED.src" value="" />
@@ -305,19 +305,19 @@
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
     <property name="ant.file.1.naloga" value="D:\Drive\2.Letnik\4.semester\Testiranje_in_kakovost\domace_naloge\1.naloga\1.naloga\build.xml" />
   </properties>
-  <testcase classname="BstTest" name="testSizeOnEmpty" time="0.003" />
+  <testcase classname="BstTest" name="testSizeOnEmpty" time="0.006" />
   <testcase classname="BstTest" name="testRemoveBasic" time="0.001" />
-  <testcase classname="BstTest" name="testAddMultiple" time="0.001" />
-  <testcase classname="BstTest" name="testRemoveEmpty" time="0.001" />
+  <testcase classname="BstTest" name="testAddMultiple" time="0.0" />
+  <testcase classname="BstTest" name="testRemoveEmpty" time="0.0" />
   <testcase classname="BstTest" name="testRemoveFalse" time="0.0" />
   <testcase classname="BstTest" name="testSizeMultiple" time="0.0" />
   <testcase classname="BstTest" name="testAsListMultiple" time="0.0" />
-  <testcase classname="BstTest" name="testDepthMultiple" time="0.0" />
+  <testcase classname="BstTest" name="testDepthMultiple" time="0.001" />
   <testcase classname="BstTest" name="testIsEmptyMultiple" time="0.0" />
-  <testcase classname="BstTest" name="testIsEmptyOne" time="0.0" />
-  <testcase classname="BstTest" name="testRemoveFirstEmpty" time="0.001" />
+  <testcase classname="BstTest" name="testIsEmptyOne" time="0.001" />
+  <testcase classname="BstTest" name="testRemoveFirstEmpty" time="0.0" />
   <testcase classname="BstTest" name="testRemoveMultipleAdditional" time="0.0" />
-  <testcase classname="BstTest" name="testGetFirstOnEmpty" time="0.0" />
+  <testcase classname="BstTest" name="testGetFirstOnEmpty" time="0.001" />
   <testcase classname="BstTest" name="testAddExists" time="0.0" />
   <testcase classname="BstTest" name="testGetFirstMultiple" time="0.0" />
   <testcase classname="BstTest" name="testExistsMultiple" time="0.001" />
@@ -329,7 +329,7 @@
   <testcase classname="BstTest" name="testDepthOnEmpty" time="0.0" />
   <testcase classname="BstTest" name="testExistsBasic" time="0.0" />
   <testcase classname="BstTest" name="testExistsEmpty" time="0.0" />
-  <testcase classname="BstTest" name="testExistsFalse" time="0.001" />
+  <testcase classname="BstTest" name="testExistsFalse" time="0.0" />
   <testcase classname="BstTest" name="testDepthOne" time="0.0" />
   <testcase classname="BstTest" name="testSizeOne" time="0.0" />
   <testcase classname="BstTest" name="testAsListOne" time="0.0" />

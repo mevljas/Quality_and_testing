@@ -214,7 +214,7 @@ public class SeznamiUVTest {
 
     public void testDepthOne() {
         assertEquals("OK", uv.processInput("add Test"));
-        if (uv.seznam instanceof BinomialHeap) {
+        if (uv.seznam instanceof BinomskaKopica) {
             assertEquals("0", uv.processInput("depth"));
         } else {
             assertEquals("1", uv.processInput("depth"));
@@ -225,7 +225,7 @@ public class SeznamiUVTest {
     public void testDepthTwo() {
         assertEquals("OK", uv.processInput("add Test1"));
         assertEquals("OK", uv.processInput("add Test2"));
-        if (uv.seznam instanceof BinomialHeap) {
+        if (uv.seznam instanceof BinomskaKopica) {
             assertEquals("1", uv.processInput("depth"));
         } else {
             assertEquals("2", uv.processInput("depth"));
