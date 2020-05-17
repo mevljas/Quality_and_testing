@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 public interface Seznam<Tip> {
@@ -26,7 +29,16 @@ public interface Seznam<Tip> {
     // Ali element obstaja v strukturi
     boolean exists(Tip e);
     
+    
     // Prepis v seznam
     //List<Tip> toList();
+    
+    void print();
+    
+    void save(OutputStream outputStream) throws IOException;
+    
+    void restore(InputStream inputStream) throws IOException, ClassNotFoundException;
+
+
 
 }

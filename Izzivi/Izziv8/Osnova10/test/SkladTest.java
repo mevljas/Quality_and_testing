@@ -1,4 +1,13 @@
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Skin;
 import org.junit.*; 
 import static org.junit.Assert.*;
 
@@ -262,5 +271,6 @@ public class SkladTest {
         instance.add(a);
         assertTrue(instance.exists(a));
     }
+    
 
 }

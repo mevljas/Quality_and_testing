@@ -1,4 +1,11 @@
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+
+
 public class PrioritetnaVrsta<Tip extends Comparable> implements Seznam<Tip> {
  
     private Object[] heap;
@@ -120,5 +127,44 @@ public class PrioritetnaVrsta<Tip extends Comparable> implements Seznam<Tip> {
     }
 
     // manjka toList
+    
+    
+    @Override
+    public void print() {
+        print(0, 0);
+    }
+    
+    private void print(int i, int numTabs) {
+        if (i >= end)
+            return;
+        print(2 * i + 2, numTabs + 1);
+        for (int j = 0; j < numTabs; j++)
+            System.out.print('\t');
+        System.out.println(heap[i]);
+        print(2 * i + 1, numTabs+1);
+        
+    }
+    
+    @Override
+    public void save(OutputStream outputStream) throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(outputStream);
+        out.writeInt(end);
+        for (int i = 0; i < end; i++) {
+            out.writeObject(heap[i]);
+            
+        }
+    }
+
+    
+    
+    @Override
+    public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(inputStream);
+        end = in.readInt();
+        for (int i = 0; i < end; i++) {
+            heap[i] = in.readObject();
+            
+        }
+    }
     
 }

@@ -1,4 +1,13 @@
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+
 class Element<Tip> {
 
     public Tip vrednost;
@@ -113,4 +122,57 @@ public class Sklad<Tip> implements Seznam<Tip> {
     }
 
     // manjka toList
+    
+    @Override
+    public void print() {
+        if(vrh != null){
+            Element tmp = vrh;
+            while (tmp != null) {  
+                if (tmp != vrh) {
+                    System.out.print(", ");
+                }
+                System.out.print(tmp.vrednost);
+                tmp = tmp.vezava;
+            }
+            System.out.println("");
+        }
+        
+    }
+    
+  
+    
+    @Override
+    public void save(OutputStream outputStream) throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(outputStream);
+        out.writeInt(size());
+        Element tmp = vrh;
+        while (tmp != null) {            
+            out.writeObject(tmp.vrednost);
+            tmp = tmp.vezava;
+        }
+    }
+
+    
+    
+    @Override
+    public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(inputStream);
+        int size = in.readInt();
+        Object[] array = new Object[size];
+       
+        for (int i = 0; i < size; i++) {
+            array[i] = in.readObject();
+        }
+        
+        
+        for (int i = size - 1; i >= 0; i--) {
+            push((Tip) array[i]);
+            
+        }
+        
+       
+    }
+    
+    
+
 }

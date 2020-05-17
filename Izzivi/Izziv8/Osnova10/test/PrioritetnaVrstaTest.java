@@ -223,5 +223,6 @@ public class PrioritetnaVrstaTest {
         pv.add("Test1");
         assertTrue(pv.exists(a));
     }
+    
 
 }

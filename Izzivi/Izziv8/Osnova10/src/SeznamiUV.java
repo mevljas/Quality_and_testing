@@ -1,4 +1,7 @@
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.HashMap;
  
@@ -23,7 +26,7 @@ public class SeznamiUV {
         } else {
             return "Error: enter command";
         }
-        if (!token.equals("use") && (null == seznam)) {
+        if (!token.equals("use") && (null == seznam) && !token.equals("exit")) {
             return "Error: please specify a data structure (use {pv|sk|bst})";
         }
         try {
@@ -80,6 +83,26 @@ public class SeznamiUV {
                         result = "Error: please specify a string";
                     }
                     break;
+                case "save":
+                    if (sc.hasNext()) {
+                        seznam.save(new FileOutputStream(sc.next()));
+                    } else {
+                        result = "Error: please specify a file name";
+                    }
+                    break;
+                case "restore":
+                    if (sc.hasNext()) {
+                        seznam.restore(new FileInputStream(sc.next()));
+                    } else {
+                        result = "Error: please specify a file name";
+                    }
+                    break;
+                case "print":
+                    seznam.print();
+                    break;
+                case "exit":
+                    result = "Have a nice day.";
+                    break;
 
                 default:
                     result = "Error: invalid command";
@@ -90,7 +113,13 @@ public class SeznamiUV {
             result = "Error: Duplicated entry";
         } catch (java.util.NoSuchElementException e) {
             result = "Error: data structure is empty";
+        }catch (IOException e) {
+            result = "Error: IO error " + e.getMessage();
         }
+        catch (ClassNotFoundException e) {
+            result = "Error: Unknown format";
+        }
+
 
         return result;
     }
