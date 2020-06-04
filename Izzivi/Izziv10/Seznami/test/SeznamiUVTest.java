@@ -242,18 +242,18 @@ public class SeznamiUVTest {
     }
 
     public void testDepthOnEmpty() {
-        assertEquals("0", uv.processInput("depth"));
+        assertEquals("0 0", uv.processInput("depth"));
     }
 
     public void testDepthOne() {
         assertEquals("OK", uv.processInput("add Ime Priimek TelefonskaStevilka"));
-        assertEquals("1", uv.processInput("depth"));
+        assertEquals("1 1", uv.processInput("depth"));
     }
 
     public void testDepthTwo() {
         assertEquals("OK", uv.processInput("add Ime1 Priimek1 TelefonskaStevilka1"));
         assertEquals("OK", uv.processInput("add Ime2 Priimek2 TelefonskaStevilka2"));
-        assertEquals("2", uv.processInput("depth"));
+        assertEquals("2 2", uv.processInput("depth"));
     }
 
     public void testAddTestSequence() {

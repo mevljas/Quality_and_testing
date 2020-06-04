@@ -4,7 +4,7 @@ import pexpect
 
 def test_bst_save_no_perm():
     baza = pexpect.pexpect()
-    filename = "test.bin"
+    filename = "p_test.bin"
 
     try:
         fd = open(filename, "w")
@@ -30,11 +30,13 @@ def test_bst_save_no_perm():
         baza.send("print")
         baza.expect("Novak, Andrej - 013456789")
         baza.expect("\tLevak, Janez - 012345678")
+        baza.expect("\tLevak, Janez - 012345678")
+        baza.expect("Novak, Andrej - 013456789")
         baza.expect("OK")
         baza.expect("Enter command: ")
 
         baza.send("save test.bin")
-        baza.expect("Error: IO error test.bin (Access is denied)")
+        baza.expect("Error: IO error p_test.bin (Access is denied)")
         baza.expect("Enter command: ")
         
         print "PASSED\ttest_bst_save_no_perm"

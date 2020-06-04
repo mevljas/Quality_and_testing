@@ -23,7 +23,8 @@ def test_bst_save_restore():
         baza.expect("Enter command: ")
 
         baza.send("print")
-        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678");
+        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678")
+        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678")
 
         baza.expect("OK")
         baza.expect("Enter command: ")
@@ -53,7 +54,8 @@ def test_bst_save_restore():
         baza.expect("Enter command: ")
 
         baza.send("print")
-        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678");
+        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678")
+        baza.expect("Novak, Janez - 014567890, Novak, Andrej - 013456789, Levak, Janez - 012345678")
         baza.expect("OK")
         baza.expect("Enter command: ")
 

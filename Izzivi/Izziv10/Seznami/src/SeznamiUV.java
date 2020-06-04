@@ -84,7 +84,7 @@ public class SeznamiUV {
                 result = seznamPoImenu.size() + "";
             }
             else if (token.equals("depth")){
-                result = seznamPoImenu.depth() + "";
+                result = seznamPoImenu.depth() + " " + seznamPoTelSt.depth();
             }
             else if (token.equals("reset")){
                 while (!seznamPoImenu.isEmpty()) {
@@ -109,6 +109,7 @@ public class SeznamiUV {
             }
             else if (token.equals("print")){
                 seznamPoImenu.print();
+                seznamPoTelSt.print();
             }
             else if (token.equals("save")){
                 if (params.length == 2) {

@@ -22,6 +22,8 @@ def test_bst_print():
         baza.send("print")
         baza.expect("Novak, Andrej - 013456789")
         baza.expect("\tLevak, Janez - 012345678")
+        baza.expect("\tLevak, Janez - 012345678")
+        baza.expect("Novak, Andrej - 013456789")
         baza.expect("OK")
         baza.expect("Enter command: ")
 
@@ -30,7 +32,7 @@ def test_bst_print():
         baza.expect("Enter command: ")
 
         baza.send("depth")
-        baza.expect("2")
+        baza.expect("2 2")
         baza.expect("Enter command: ")
 
         print "PASSED\ttest_bst_print"
