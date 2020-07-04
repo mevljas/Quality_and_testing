@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Sklad.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Seznami&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Sklad.java</span></div><h1>Sklad.java</h1><pre class="source lang-java linenums">
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.Comparator;
+
+
+class Element&lt;Tip&gt; {
+
+    public Tip vrednost;
+    public Element&lt;Tip&gt; vezava;
+
+<span class="fc" id="L15">    public Element(Tip e) {</span>
+<span class="fc" id="L16">        vrednost = e;</span>
+<span class="fc" id="L17">    }</span>
+}
+
+public class Sklad&lt;Tip&gt; implements Seznam&lt;Tip&gt;{
+
+    private Element&lt;Tip&gt; vrh;
+    private Comparator&lt;Tip&gt; comparator;
+
+<span class="fc" id="L25">    public Sklad(Comparator&lt;Tip&gt; comparator) {</span>
+<span class="fc" id="L26">        this.comparator = comparator;</span>
+<span class="fc" id="L27">    }</span>
+
+    public void push(Tip e) {
+<span class="fc" id="L30">        Element&lt;Tip&gt; novVrh = new Element&lt;&gt;(e);</span>
+<span class="fc" id="L31">        novVrh.vezava = vrh;</span>
+<span class="fc" id="L32">        vrh = novVrh;</span>
+<span class="fc" id="L33">    }</span>
+
+    public Tip pop() {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (null == vrh) {</span>
+<span class="fc" id="L37">            throw new java.util.NoSuchElementException();</span>
+        }
+
+<span class="fc" id="L40">        Tip e = vrh.vrednost;</span>
+<span class="fc" id="L41">        vrh = vrh.vezava;</span>
+<span class="fc" id="L42">        return e;</span>
+    }
+
+    public Tip peek() {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (null == vrh) {</span>
+<span class="fc" id="L47">            throw new java.util.NoSuchElementException();</span>
+        }
+<span class="fc" id="L49">        Tip e = vrh.vrednost;</span>
+<span class="fc" id="L50">        return e;</span>
+    }
+
+    @Override
+    public boolean isEmpty() {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        return (null == vrh);</span>
+    }
+
+    public int searchOld(Tip e) {
+<span class="fc" id="L59">        Element&lt;Tip&gt; temp = vrh;</span>
+<span class="fc" id="L60">        int i = 0;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        while (null != temp) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (0 == comparator.compare(temp.vrednost, e)) {</span>
+<span class="fc" id="L63">                return i;</span>
+            }
+<span class="fc" id="L65">            i++;</span>
+<span class="fc" id="L66">            temp = temp.vezava;</span>
+        }
+<span class="fc" id="L68">        return -1;</span>
+    }
+
+    public int count() {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">         if (isEmpty()) {</span>
+<span class="fc" id="L73">            return 0;</span>
+        }
+<span class="fc" id="L75">        int stElementov = 0;</span>
+<span class="fc" id="L76">        Element&lt;Tip&gt; tmp = vrh;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        while (tmp != null) {</span>
+<span class="fc" id="L78">            stElementov++;</span>
+<span class="fc" id="L79">            tmp = tmp.vezava;</span>
+        }
+<span class="fc" id="L81">        return stElementov;</span>
+    }
+
+     @Override
+    public void add(Tip e) {
+<span class="fc" id="L86">        push(e);</span>
+<span class="fc" id="L87">    }</span>
+
+    @Override
+    public Tip removeFirst() {
+<span class="fc" id="L91">        return pop();</span>
+    }
+
+     @Override
+    public Tip remove(Tip e) {
+<span class="fc" id="L96">        Element&lt;Tip&gt; tmp = vrh;</span>
+<span class="fc" id="L97">        Element&lt;Tip&gt; prejsni = null;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        while (null != tmp) {</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            if (tmp.vrednost.equals(e)) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">                if (prejsni == null) {</span>
+<span class="fc" id="L101">                    vrh = vrh.vezava;</span>
+                }
+                else{
+<span class="fc" id="L104">                    prejsni.vezava = tmp;</span>
+                }
+<span class="fc" id="L106">                return (Tip) tmp.vrednost;</span>
+            }
+<span class="fc" id="L108">            prejsni = tmp;</span>
+<span class="fc" id="L109">            tmp = tmp.vezava;</span>
+        }
+<span class="fc" id="L111">        throw new java.util.NoSuchElementException();</span>
+    }
+
+    @Override
+    public Tip getFirst() {
+<span class="fc" id="L116">        return peek();</span>
+    }
+
+    @Override
+    public int size() {
+<span class="fc" id="L121">        return count();</span>
+    }
+
+    @Override
+    public int depth() {
+<span class="fc" id="L126">        return count();</span>
+    }
+
+    @Override
+    public boolean exists(Tip e) {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (searchOld(e) == -1){</span>
+<span class="fc" id="L132">            return false;</span>
+        }
+<span class="fc" id="L134">        return true;</span>
+    }
+
+    @Override
+    public void print() {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if(vrh != null){</span>
+<span class="nc" id="L140">            Element tmp = vrh;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            while (tmp != null) {  </span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (tmp != vrh) {</span>
+<span class="nc" id="L143">                    System.out.print(&quot;, &quot;);</span>
+                }
+<span class="nc" id="L145">                System.out.print(tmp.vrednost);</span>
+<span class="nc" id="L146">                tmp = tmp.vezava;</span>
+            }
+<span class="nc" id="L148">            System.out.println(&quot;&quot;);</span>
+        }
+        
+<span class="nc" id="L151">    }</span>
+    
+    
+    
+  
+    
+    @Override
+    public void save(OutputStream outputStream) throws IOException {
+<span class="nc" id="L159">        ObjectOutputStream out = new ObjectOutputStream(outputStream);</span>
+<span class="nc" id="L160">        out.writeInt(size());</span>
+<span class="nc" id="L161">        Element tmp = vrh;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        while (tmp != null) {            </span>
+<span class="nc" id="L163">            out.writeObject(tmp.vrednost);</span>
+<span class="nc" id="L164">            tmp = tmp.vezava;</span>
+        }
+<span class="nc" id="L166">    }</span>
+
+    
+    
+    @Override
+    public void restore(InputStream inputStream) throws IOException, ClassNotFoundException {
+<span class="nc" id="L172">        ObjectInputStream in = new ObjectInputStream(inputStream);</span>
+<span class="nc" id="L173">        int size = in.readInt();</span>
+<span class="nc" id="L174">        Object[] array = new Object[size];</span>
+       
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L177">            array[i] = in.readObject();</span>
+        }
+        
+        
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        for (int i = size - 1; i &gt;= 0; i--) {</span>
+<span class="nc" id="L182">            push((Tip) array[i]);</span>
+            
+        }
+        
+       
+<span class="nc" id="L187">    }</span>
+
+    @Override
+    public Tip search(Tip e) {
+<span class="nc" id="L191">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;); //To change body of generated methods, choose Tools | Templates.</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

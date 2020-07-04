@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SeznamiUV.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Seznami&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SeznamiUV.java</span></div><h1>SeznamiUV.java</h1><pre class="source lang-java linenums">
+import java.util.HashMap;
+import java.util.StringTokenizer;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+
+public class SeznamiUV {
+
+    HashMap&lt;String, Seznam&lt;BolnikObj&gt;&gt; seznamiPoImenu;
+    HashMap&lt;String, Seznam&lt;BolnikObj&gt;&gt; seznamiPoEMSO;
+    Seznam&lt;BolnikObj&gt; seznamPoImenu;
+    Seznam&lt;BolnikObj&gt; seznamPoEMSO;
+    
+<span class="fc" id="L16">    static String memoryError = &quot;Error: not enough memory, operation failed&quot;;</span>
+   
+<span class="fc" id="L18">    public SeznamiUV() {</span>
+<span class="fc" id="L19">        seznamiPoImenu = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L20">        seznamiPoEMSO = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L21">    }</span>
+    
+    public void addImpl(String key, Seznam&lt;BolnikObj&gt; seznamPoImenu, Seznam&lt;BolnikObj&gt; seznamPoTelSt) {
+<span class="fc" id="L24">        seznamiPoImenu.put(key, seznamPoImenu);</span>
+<span class="fc" id="L25">        seznamiPoEMSO.put(key, seznamPoTelSt);</span>
+<span class="fc" id="L26">    }</span>
+    
+    public void addImpl(String key, Seznam&lt;BolnikObj&gt; seznam) {
+<span class="fc" id="L29">        seznamiPoImenu.put(key, seznam);</span>
+<span class="fc" id="L30">        seznamiPoEMSO.put(key, seznamPoEMSO);</span>
+<span class="fc" id="L31">    }</span>
+
+
+    public String processInput(String input) {
+        String token;
+<span class="fc" id="L36">        String result = &quot;OK&quot;;</span>
+<span class="fc" id="L37">        String[] params = input.split(&quot; &quot;);</span>
+
+
+<span class="fc" id="L40">        token = params[0];</span>
+
+<span class="pc bpc" id="L42" title="1 of 6 branches missed.">        if (!token.equals(&quot;use&quot;) &amp;&amp; (null == seznamPoImenu) &amp;&amp; !token.equals(&quot;exit&quot;)) {</span>
+<span class="fc" id="L43">            return &quot;Error: please specify a data structure (use {pv|sk|bst|bk})&quot;;</span>
+        }
+        try {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (token.equals(&quot;use&quot;)){</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">                if (params.length &gt; 1) {</span>
+<span class="fc" id="L48">                    String structType = params[1];</span>
+<span class="fc" id="L49">                    seznamPoImenu = seznamiPoImenu.get(structType);</span>
+<span class="fc" id="L50">                    seznamPoEMSO = seznamiPoEMSO.get(structType);</span>
+
+<span class="fc" id="L52">                } </span>
+            }
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            else if (token.equals(&quot;add&quot;)){</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">                if (params.length == 5)</span>
+                {
+<span class="fc" id="L57">                    BolnikObj p = new BolnikObj(params[1], params[2], params[3], params[4]);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">                    if (!seznamPoImenu.exists(p)) {</span>
+<span class="fc" id="L59">                        seznamPoImenu.add(p);</span>
+<span class="fc" id="L60">                        seznamPoEMSO.add(p);</span>
+                    }
+                    else{
+<span class="fc" id="L63">                        throw new IllegalArgumentException();</span>
+                    }
+                    
+<span class="fc" id="L66">                }</span>
+                else
+<span class="fc" id="L68">                    result = &quot;Error: please specify four strings&quot;;</span>
+            }
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            else if (token.equals(&quot;removefirst&quot;)){</span>
+<span class="fc" id="L71">                BolnikObj p = seznamPoImenu.removeFirst();</span>
+<span class="fc" id="L72">                result = seznamPoEMSO.remove(p).toString();</span>
+<span class="fc" id="L73">            }</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            else if (token.equals(&quot;remove&quot;)){</span>
+                try {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                    if (params.length == 3)  {</span>
+<span class="fc" id="L77">                        BolnikObj p = seznamPoImenu.remove(new BolnikObj(params[1], params[2], &quot;1&quot;, &quot;3105940500232&quot;));</span>
+<span class="fc" id="L78">                        seznamPoEMSO.remove(p);</span>
+<span class="fc" id="L79">                    }</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                    else if (params.length == 2)  {</span>
+<span class="fc" id="L81">                        BolnikObj p = seznamPoEMSO.remove(new BolnikObj(&quot;Ime&quot;, &quot;Priimek&quot;,&quot;1&quot;, params[1]));</span>
+<span class="fc" id="L82">                        seznamPoImenu.remove(p);</span>
+<span class="fc" id="L83">                    }</span>
+                    else {
+<span class="fc" id="L85">                        throw new UnsupportedOperationException();</span>
+                    }
+<span class="fc" id="L87">                    result = &quot;OK&quot;;</span>
+                    
+<span class="fc" id="L89">                } catch (NoSuchElementException | NullPointerException e) {</span>
+<span class="fc" id="L90">                    result = &quot;Patient does not exist&quot;;</span>
+<span class="fc" id="L91">                }</span>
+                
+            }
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            else if (token.equals(&quot;getfirst&quot;)){</span>
+<span class="fc" id="L95">                result = seznamPoImenu.getFirst().toString();</span>
+            }
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            else if (token.equals(&quot;count&quot;)){</span>
+<span class="fc" id="L98">                result = seznamPoImenu.size() + &quot;&quot;;</span>
+            }
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            else if (token.equals(&quot;depth&quot;)){</span>
+<span class="fc" id="L101">                result = seznamPoImenu.depth()+&quot;&quot;;</span>
+            }
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            else if (token.equals(&quot;reset&quot;)){</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">                while (!seznamPoImenu.isEmpty()) {</span>
+<span class="fc" id="L105">                    seznamPoImenu.removeFirst();</span>
+                }
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                while (!seznamPoEMSO.isEmpty()) {</span>
+<span class="fc" id="L108">                    seznamPoEMSO.removeFirst();</span>
+                }
+            }
+//            else if (token.equals(&quot;exists&quot;)){
+//                result = &quot;No&quot;;
+//                if (params.length == 3)  {
+//                    if (seznamPoImenu.exists(new BolnikObj(params[1], params[2], &quot;&quot;, &quot;&quot;)))
+//                        result = &quot;Yes&quot;;
+//                } else if (params.length == 2)  {
+//                    if (seznamPoEMSO.exists(new BolnikObj(&quot;&quot;, &quot;&quot;,&quot;&quot;, params[1])))
+//                        result = &quot;Yes&quot;;
+//                }
+//                else {
+//                    result = &quot;Error: please specify two strings&quot;;
+//                }
+//            }
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            else if (token.equals(&quot;print&quot;)){</span>
+<span class="fc" id="L125">                seznamPoImenu.print();</span>
+            }
+<span class="fc bfc" id="L127" title="All 2 branches covered.">            else if (token.equals(&quot;save&quot;)){</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">                if (params.length == 2) {</span>
+<span class="fc" id="L129">                    seznamPoImenu.save(new FileOutputStream( &quot;p_&quot; + params[1] ));</span>
+<span class="fc" id="L130">                    seznamPoEMSO.save(new FileOutputStream( &quot;t_&quot; + params[1] ));</span>
+<span class="fc" id="L131">                    result = &quot;OK&quot;;</span>
+                } else {
+<span class="fc" id="L133">                    result = &quot;Error: please specify a file name&quot;;</span>
+                }
+            }
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            else if (token.equals(&quot;restore&quot;)){</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                if (params.length == 2) {</span>
+<span class="fc" id="L138">                    seznamPoImenu.restore(new FileInputStream( &quot;p_&quot; + params[1]  ));</span>
+<span class="fc" id="L139">                    seznamPoEMSO.restore(new FileInputStream( &quot;t_&quot; +params[1] ));</span>
+<span class="fc" id="L140">                    result = &quot;OK&quot;;</span>
+                } else {
+<span class="fc" id="L142">                    result = &quot;Error: please specify a file name&quot;;</span>
+                }
+            }
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            else if (token.equals(&quot;exit&quot;)){</span>
+<span class="fc" id="L146">                    result = &quot;Have a nice day.&quot;;</span>
+            }
+<span class="fc bfc" id="L148" title="All 2 branches covered.">            else if (token.equals(&quot;search&quot;)){</span>
+<span class="fc" id="L149">                result = &quot;&quot;;</span>
+                try {
+                    BolnikObj bo;
+<span class="fc bfc" id="L152" title="All 2 branches covered.">                    if (params.length == 3)  {</span>
+<span class="fc" id="L153">                         bo = seznamPoImenu.search(new BolnikObj(params[1], params[2], &quot;1&quot;, &quot;3105940500232&quot;));</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                    } else if (params.length == 2)  {</span>
+<span class="fc" id="L156">                         bo = seznamPoEMSO.search(new BolnikObj(&quot;Ime&quot;, &quot;Priimek&quot;,&quot;1&quot;, params[1]));</span>
+                    }
+                    else {
+<span class="fc" id="L159">                        throw new UnsupportedOperationException();</span>
+                    }
+<span class="fc" id="L161">                    result = bo.toString();</span>
+                    
+<span class="fc" id="L163">                } catch (NoSuchElementException | NullPointerException e) {</span>
+<span class="fc" id="L164">                    result = &quot;Patient does not exist&quot;;</span>
+<span class="fc" id="L165">                }</span>
+               
+            }
+            else {
+<span class="fc" id="L169">                result = &quot;Error: invalid command&quot;;</span>
+            }
+                
+
+<span class="fc" id="L173">        } catch (UnsupportedOperationException e) {</span>
+<span class="fc" id="L174">            result = &quot;Invalid input data&quot;;</span>
+<span class="fc" id="L175">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L176">            result = &quot;Patient already exists&quot;;</span>
+<span class="fc" id="L177">        } catch (java.util.NoSuchElementException e) {</span>
+<span class="fc" id="L178">            result = &quot;Error: structure is empty&quot;;</span>
+        } 
+<span class="nc" id="L180">        catch (IOException e) {</span>
+<span class="nc" id="L181">            result = &quot;Error: IO error &quot; + e.getMessage();</span>
+<span class="nc" id="L182">        }  catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L183">            result = &quot;Invalid input data&quot;;</span>
+<span class="fc" id="L184">        } catch (OutOfMemoryError e) {</span>
+<span class="fc" id="L185">            return memoryError;</span>
+<span class="pc" id="L186">        }</span>
+
+<span class="fc" id="L188">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
