@@ -58,7 +58,7 @@ individual use,
 knowledge of basic terminology in the field of software
 metrics.
 ## Intended learning outcomes
-### Knowledge and understanding:
+### Knowledge and understanding
 Understanding and knowledge of the properties of
 different types of software testing; knowledge of
 model-driven testing design and different testing
@@ -71,7 +71,7 @@ of software metrics.
 Practical knowledge and approaches in software testing,
 practical knowledge of software metrics and properties
 of software quality assurance process.
-### Reflection:
+### Reflection
 Software testing presents the important part of
 software development process, despite the fact that its
 importance is often neglected. Similarly, this is also true
@@ -79,7 +79,7 @@ for quality assurance. Having the theoretical and
 practical knowledge about the approaches and
 possibilities increases the acceptance rate of described
 methods, thus increases the quality of software.
-### Transferable skills – are not bound only to this course:
+### Transferable skills – are not bound only to this course
 Practical knowledge in the field of software testing,
 practical knowledge of the quality assurance
 approaches, particularly metrics and models.
