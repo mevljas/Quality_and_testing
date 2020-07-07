@@ -1,4 +1,4 @@
-# Testing-and-Quality
+# Testing and Quality
 Faculty subject Testing and Quality.
 ## Content (Syllabus outline)
 ### Software testing
